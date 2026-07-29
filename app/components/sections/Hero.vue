@@ -27,13 +27,16 @@ onMounted(() => {
           isLoaded || prefersReducedMotion ? 'opacity-100' : 'opacity-0'
         ]"
       >
-        <img
-          src="/images/hero1.jpeg"
-          alt="Karimi Entertainment — Live Concerts in Europe"
-          class="w-full h-full object-cover object-center"
-          loading="eager"
-          fetchpriority="high"
-        />
+        <picture>
+          <source media="(min-width: 768px)" srcset="/images/hero1.jpeg" />
+          <img
+            src="/images/hero-mobile.jpeg"
+            alt="Karimi Entertainment — Live Concerts in Europe"
+            class="w-full h-full object-cover object-center"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </picture>
       </div>
 
       <!-- Bottom fade -->
