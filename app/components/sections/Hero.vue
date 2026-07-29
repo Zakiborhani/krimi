@@ -23,7 +23,7 @@ onMounted(() => {
       <div
         :class="[
           'transition-opacity duration-[1400ms] ease-expo-out',
-          'absolute left-0 right-0 bottom-0 top-[72px] md:top-[84px]',
+          'absolute left-0 right-0 bottom-0 top-[86px] md:top-[84px]',
           isLoaded || prefersReducedMotion ? 'opacity-100' : 'opacity-0'
         ]"
       >

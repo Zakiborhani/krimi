@@ -39,7 +39,7 @@ watch(isMenuOpen, (open) => {
 <template>
   <header class="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-ink/10">
     <div class="max-w-site mx-auto px-6 md:px-10 lg:px-16">
-      <nav class="flex items-center justify-between py-4 md:py-5">
+      <nav class="flex items-center justify-between py-6 md:py-5">
 
         <!-- Logo -->
         <NuxtLink
