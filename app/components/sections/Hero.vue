@@ -32,7 +32,7 @@ onMounted(() => {
           <img
             src="/images/hero-mobile.jpeg"
             alt="Karimi Entertainment — Live Concerts in Europe"
-            class="w-full h-full object-cover object-center"
+            class="w-full h-full object-cover object-[center_35%] md:object-center"
             loading="eager"
             fetchpriority="high"
           />
