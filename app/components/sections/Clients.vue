@@ -18,7 +18,7 @@ const clients: Client[] = [
 </script>
 
 <template>
-  <section id="clients" class="relative bg-bg-dark py-20 overflow-hidden">
+  <section id="clients" class="relative bg-bg-dark py-12 overflow-hidden">
 
     <!-- Top rule -->
     <div class="w-full h-px bg-ink-light/8 mb-14" />
@@ -26,7 +26,7 @@ const clients: Client[] = [
     <!-- Section Label -->
     <div class="flex items-center justify-center mb-14">
       <div class="w-10 h-px bg-gold mr-6" />
-      <span class="text-sm tracking-[0.4em] uppercase font-sans font-light text-ink-light/50">
+      <span class="text-sm tracking-[0.4em] uppercase font-sans font-light text-ink-light/75">
         Our Partners
       </span>
       <div class="w-10 h-px bg-gold ml-6" />
@@ -43,8 +43,8 @@ const clients: Client[] = [
       <!-- Scrolling strip — duplicated for seamless loop -->
       <div class="marquee-track flex items-center gap-16 whitespace-nowrap">
         <div
-          v-for="client in [...clients, ...clients]"
-          :key="`${client.id}-${Math.random()}`"
+          v-for="(client, i) in [...clients, ...clients]"
+          :key="`${client.id}-${i}`"
           class="flex items-center shrink-0"
         >
           <!-- Real logo -->
@@ -58,7 +58,7 @@ const clients: Client[] = [
           <!-- Text placeholder until real logos are provided -->
           <span
             v-else
-            class="font-display text-3xl font-light tracking-widest text-ink-light/25 hover:text-gold transition-colors duration-500 uppercase select-none"
+            class="font-display text-3xl font-light tracking-widest text-ink-light/55 hover:text-gold transition-colors duration-500 uppercase select-none"
           >
             {{ client.name }}
           </span>

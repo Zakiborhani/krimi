@@ -88,28 +88,28 @@ onMounted(async () => {
     </section>
 
     <!-- Stats -->
-    <section class="px-6 md:px-10 lg:px-16 py-16 border-t border-ink-light/8">
+    <section class="bg-bg text-ink px-6 md:px-10 lg:px-16 py-16">
       <div class="max-w-site mx-auto">
         <div ref="statsRef" class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
 
           <div class="flex flex-col gap-2">
-            <span class="font-display text-5xl md:text-6xl font-light text-ink-light leading-none">2021</span>
-            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink-light/30">Founded</span>
+            <span class="font-display text-5xl md:text-6xl font-light text-ink leading-none">2021</span>
+            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink/60">Founded</span>
           </div>
 
           <div class="flex flex-col gap-2">
-            <span class="font-display text-5xl md:text-6xl font-light text-ink-light leading-none">10<span class="text-gold">+</span></span>
-            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink-light/30">Events Produced</span>
+            <span class="font-display text-5xl md:text-6xl font-light text-ink leading-none">10<span class="text-crimson">+</span></span>
+            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink/60">Events Produced</span>
           </div>
 
           <div class="flex flex-col gap-2">
-            <span class="font-display text-5xl md:text-6xl font-light text-ink-light leading-none">6<span class="text-gold">+</span></span>
-            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink-light/30">Countries</span>
+            <span class="font-display text-5xl md:text-6xl font-light text-ink leading-none">6<span class="text-crimson">+</span></span>
+            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink/60">Countries</span>
           </div>
 
           <div class="flex flex-col gap-2">
-            <span class="font-display text-5xl md:text-6xl font-light text-ink-light leading-none">∞</span>
-            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink-light/30">Memories Created</span>
+            <span class="font-display text-5xl md:text-6xl font-light text-ink leading-none">∞</span>
+            <span class="text-[10px] tracking-[0.25em] uppercase font-sans text-ink/60">Memories Created</span>
           </div>
 
         </div>
@@ -122,14 +122,20 @@ onMounted(async () => {
         <div ref="founderRef" class="grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
 
           <!-- Left — founder photo -->
-          <div class="relative aspect-[3/4] overflow-hidden">
-            <img
-              src="/images/mrkarim.jpeg"
-              alt="Karim Karimi — Founder of Karimi Entertainment"
-              class="w-full h-full object-cover object-center grayscale"
-            />
-            <!-- Gold bottom accent -->
-            <div class="absolute bottom-0 left-0 right-0 h-px bg-gold/50" />
+          <div class="relative aspect-[3/4]">
+            <!-- Decorative offset frames -->
+            <div class="absolute -top-4 -left-4 w-full h-full rounded-2xl border border-crimson/60 -rotate-3 pointer-events-none" />
+            <div class="absolute -top-2 -left-2 w-full h-full rounded-2xl border border-gold/60 -rotate-1 pointer-events-none" />
+
+            <div class="relative w-full h-full overflow-hidden rounded-2xl">
+              <img
+                src="/images/mrkarim.jpeg"
+                alt="Karim Karimi — Founder of Karimi Entertainment"
+                class="w-full h-full object-cover object-center grayscale"
+              />
+              <!-- Gold bottom accent -->
+              <div class="absolute bottom-0 left-0 right-0 h-px bg-gold/50" />
+            </div>
           </div>
 
           <!-- Middle — founder identity -->

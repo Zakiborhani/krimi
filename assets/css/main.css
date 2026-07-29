@@ -18,8 +18,8 @@ html {
 }
 
 body {
-  background-color: #FAF5EE;
-  color: #1A0D10;
+  background-color: #002429;
+  color: #FEF2E8;
   font-family: 'DM Sans', system-ui, sans-serif;
   font-weight: 300;
   overflow-x: hidden;
@@ -27,8 +27,8 @@ body {
 
 /* Cinematic selection */
 ::selection {
-  background-color: #C9A450;
-  color: #FAF5EE;
+  background-color: #00FF90;
+  color: #FEF2E8;
 }
 
 /* Scrollbar */
@@ -36,10 +36,10 @@ body {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF5EE;
+  background: #FEF2E8;
 }
 ::-webkit-scrollbar-thumb {
-  background: #7A6B65;
+  background: #3A5C5D;
 }
 
 /* Page transition */

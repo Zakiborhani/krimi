@@ -16,9 +16,9 @@ const isBtnHovered = ref(false)
 
 const ctaBtnStyle = computed(() => {
   if (isBtnHovered.value) {
-    return { backgroundColor: '#C9A450', color: '#000000', borderColor: '#C9A450' }
+    return { backgroundColor: '#003136', color: '#FEF2E8', borderColor: '#003136' }
   }
-  return { backgroundColor: 'transparent', color: '#C9A450', borderColor: 'rgba(201,164,80,0.7)' }
+  return { backgroundColor: '#002429', color: '#FEF2E8', borderColor: '#002429' }
 })
 
 const toggleMenu = () => {
@@ -37,7 +37,7 @@ watch(isMenuOpen, (open) => {
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-ink/10">
     <div class="max-w-site mx-auto px-6 md:px-10 lg:px-16">
       <nav class="flex items-center justify-between py-4 md:py-5">
 
@@ -51,7 +51,7 @@ watch(isMenuOpen, (open) => {
           <img
             src="/images/karimi-logo-white.png"
             alt="Karimi Entertainment"
-            class="h-9 md:h-11 w-auto select-none transition-opacity duration-300 ease-power2-out group-hover:opacity-80"
+            class="navbar-logo h-9 md:h-11 w-auto select-none transition-opacity duration-300 ease-power2-out group-hover:opacity-80"
             width="1007"
             height="537"
           >
@@ -62,7 +62,7 @@ watch(isMenuOpen, (open) => {
           <li v-for="link in navLinks" :key="link.label">
             <a
               :href="link.to"
-              :class="['nav-link text-[11px] tracking-[0.2em] uppercase font-sans font-light transition-colors duration-300 ease-power2-out', 'nav-link--dark text-ink-light/70 hover:text-ink-light']"
+              :class="['nav-link text-[11px] tracking-[0.2em] uppercase font-sans font-light transition-colors duration-300 ease-power2-out', 'nav-link--light text-ink/85 hover:text-ink']"
             >
               {{ link.label }}
             </a>
@@ -91,21 +91,21 @@ watch(isMenuOpen, (open) => {
           <span
             :class="[
               'block h-px transition-all duration-400 ease-expo-out',
-              'bg-ink-light',
+              'bg-ink',
               isMenuOpen ? 'w-6 rotate-45 translate-y-[10px]' : 'w-6'
             ]"
           />
           <span
             :class="[
               'block h-px transition-all duration-400 ease-expo-out',
-              'bg-ink-light',
+              'bg-ink',
               isMenuOpen ? 'opacity-0 w-4' : 'w-4'
             ]"
           />
           <span
             :class="[
               'block h-px transition-all duration-400 ease-expo-out',
-              'bg-ink-light',
+              'bg-ink',
               isMenuOpen ? 'w-6 -rotate-45 -translate-y-[10px]' : 'w-6'
             ]"
           />
@@ -154,7 +154,7 @@ watch(isMenuOpen, (open) => {
         <!-- Mobile CTA -->
         <a
           href="/#events"
-          class="inline-flex self-start text-[11px] tracking-[0.2em] uppercase font-sans font-light px-6 py-3 border border-gold/60 text-gold hover:bg-gold hover:text-bg transition-all duration-300"
+          class="inline-flex self-start text-[11px] tracking-[0.2em] uppercase font-sans font-light px-6 py-3 bg-gold text-bg-dark hover:bg-gold-light transition-all duration-300"
           @click="closeMenu"
         >
           Get Tickets
@@ -170,6 +170,10 @@ watch(isMenuOpen, (open) => {
 </template>
 
 <style scoped>
+.navbar-logo {
+  filter: invert(1);
+}
+
 .nav-link {
   position: relative;
   padding: 5px 10px;
@@ -201,20 +205,20 @@ watch(isMenuOpen, (open) => {
   transition: width 0.1s ease, height 0.1s ease;
 }
 
-/* Gold snake on light background */
+/* Green snake on light background */
 .nav-link--light::before {
-  border-color: #C9A450;
+  border-color: #00FF90;
 }
 .nav-link--light::after {
-  border-color: #C9A450;
+  border-color: #00FF90;
 }
 
 /* White snake on dark background */
 .nav-link--dark::before {
-  border-color: rgba(242, 235, 224, 0.8);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 .nav-link--dark::after {
-  border-color: rgba(242, 235, 224, 0.8);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 /* Hover — slow snake draws clockwise */

@@ -61,7 +61,7 @@ const startLerp = (index: number) => {
     state.cy = lerp(state.cy, state.ty, 0.09)
 
     spotlights.value[index] = {
-      background: `radial-gradient(circle 280px at ${state.cx}px ${state.cy}px, rgba(201,164,80,0.18) 0%, rgba(201,164,80,0.07) 40%, transparent 75%)`,
+      background: `radial-gradient(circle 280px at ${state.cx}px ${state.cy}px, rgba(255,0,166,0.18) 0%, rgba(255,0,166,0.07) 40%, transparent 75%)`,
       opacity: 1,
     }
 
@@ -147,7 +147,7 @@ onMounted(async () => {
           <div class="w-8 h-px bg-gold" />
         </div>
         <h2 class="font-display text-display-sm text-ink-light font-light">
-          Voices from the Audience
+          Voices from the <span class="italic text-crimson">Audience</span>
         </h2>
       </div>
 
@@ -168,8 +168,8 @@ onMounted(async () => {
             :style="{ ...spotlights[index], transition: 'opacity 0.4s ease' }"
           />
 
-          <!-- Gold quote mark -->
-          <span class="font-display text-7xl text-gold/25 leading-none mb-4 group-hover:text-gold/40 transition-colors duration-500 select-none">
+          <!-- Quote mark -->
+          <span class="font-display text-7xl text-crimson/40 leading-none mb-4 group-hover:text-crimson/60 transition-colors duration-500 select-none">
             "
           </span>
 
@@ -179,7 +179,7 @@ onMounted(async () => {
           </p>
 
           <!-- Bottom rule -->
-          <div class="w-8 h-px bg-gold/40 mb-6 group-hover:w-16 transition-all duration-500 ease-expo-out" />
+          <div class="w-8 h-px bg-crimson/40 mb-6 group-hover:w-16 transition-all duration-500 ease-expo-out" />
 
           <!-- Author -->
           <div>

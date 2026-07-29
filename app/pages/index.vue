@@ -1,8 +1,8 @@
 <template>
   <main>
     <SectionsHero />
-    <SectionsEvents />
     <SectionsClients />
+    <SectionsEvents />
     <SectionsTestimonials />
   </main>
 </template>

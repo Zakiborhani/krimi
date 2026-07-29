@@ -13,31 +13,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="relative w-full bg-bg-dark overflow-hidden">
+  <section class="relative w-full bg-[#2B1A1E] overflow-hidden">
 
-    <!-- Mobile: natural aspect ratio so all 4 artists are visible -->
+    <!-- Mobile: tall crop that keeps all 4 artists in frame -->
     <!-- Desktop: full screen height -->
-    <div class="relative w-full pt-[72px] md:pt-0 md:h-screen md:min-h-[500px]">
+    <div class="relative w-full h-[75vh] min-h-[420px] md:h-screen md:min-h-[500px]">
 
       <!-- Hero Image -->
       <div
         :class="[
           'transition-opacity duration-[1400ms] ease-expo-out',
-          'relative md:absolute md:inset-0 md:top-[84px]',
+          'absolute left-0 right-0 bottom-0 top-[72px] md:top-[84px]',
           isLoaded || prefersReducedMotion ? 'opacity-100' : 'opacity-0'
         ]"
       >
         <img
           src="/images/hero1.jpeg"
           alt="Karimi Entertainment — Live Concerts in Europe"
-          class="w-full h-auto md:h-full md:object-cover md:object-center"
+          class="w-full h-full object-cover object-center"
           loading="eager"
           fetchpriority="high"
         />
       </div>
 
-      <!-- Bottom fade — desktop only -->
-      <div class="hidden md:block absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-bg-dark to-transparent pointer-events-none" />
+      <!-- Bottom fade -->
+      <div class="absolute bottom-0 left-0 right-0 h-32 md:h-40 bg-gradient-to-t from-[#2B1A1E] to-transparent pointer-events-none" />
 
       <!-- Scroll Indicator — desktop only -->
       <div
