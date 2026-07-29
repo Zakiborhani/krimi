@@ -18,13 +18,13 @@ const clients: Client[] = [
 </script>
 
 <template>
-  <section id="clients" class="relative bg-bg-dark py-12 overflow-hidden">
+  <section id="clients" class="relative bg-bg-dark py-8 md:py-12 overflow-hidden">
 
     <!-- Top rule -->
-    <div class="w-full h-px bg-ink-light/8 mb-14" />
+    <div class="w-full h-px bg-ink-light/8 mb-6 md:mb-14" />
 
     <!-- Section Label -->
-    <div class="flex items-center justify-center mb-14">
+    <div class="flex items-center justify-center mb-6 md:mb-14">
       <div class="w-10 h-px bg-gold mr-6" />
       <span class="text-sm tracking-[0.4em] uppercase font-sans font-light text-ink-light/75">
         Our Partners
@@ -68,7 +68,7 @@ const clients: Client[] = [
     </div>
 
     <!-- Bottom rule -->
-    <div class="w-full h-px bg-ink/8 mt-14" />
+    <div class="w-full h-px bg-ink/8 mt-6 md:mt-14" />
 
   </section>
 </template>
