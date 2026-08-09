@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 useHead({ title: 'About — Karimi Entertainment' })
 
 const storyRef = ref<HTMLElement | null>(null)
 const founderRef = ref<HTMLElement | null>(null)
 const statsRef = ref<HTMLElement | null>(null)
+const founderPhotoRef = ref<HTMLElement | null>(null)
 
 const audioRef = ref<HTMLAudioElement | null>(null)
 const isPlaying = ref(false)
@@ -35,8 +36,26 @@ const remainingLabel = computed(() => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 })
 
+let founderAudioObserver: IntersectionObserver | null = null
+
 onMounted(async () => {
   if (process.client) {
+    if (founderPhotoRef.value) {
+      founderAudioObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (!audioRef.value || !entry) return
+          if (entry.isIntersecting) {
+            audioRef.value.currentTime = 0
+            audioRef.value.play().catch(() => {})
+          } else {
+            audioRef.value.pause()
+          }
+        },
+        { threshold: 0.6 }
+      )
+      founderAudioObserver.observe(founderPhotoRef.value)
+    }
+
     const { gsap } = await import('gsap')
     const { ScrollTrigger } = await import('gsap/ScrollTrigger')
     gsap.registerPlugin(ScrollTrigger)
@@ -74,6 +93,10 @@ onMounted(async () => {
       )
     })
   }
+})
+
+onBeforeUnmount(() => {
+  founderAudioObserver?.disconnect()
 })
 </script>
 
@@ -150,7 +173,7 @@ onMounted(async () => {
         <div ref="founderRef" class="grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
 
           <!-- Left — founder photo -->
-          <div class="relative aspect-[3/4]">
+          <div ref="founderPhotoRef" class="relative aspect-[3/4]">
             <!-- Decorative offset frames -->
             <div class="absolute -top-4 -left-4 w-full h-full rounded-2xl border border-crimson/60 -rotate-3 pointer-events-none" />
             <div class="absolute -top-2 -left-2 w-full h-full rounded-2xl border border-gold/60 -rotate-1 pointer-events-none" />
