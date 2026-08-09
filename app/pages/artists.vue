@@ -10,7 +10,6 @@ interface Artist {
   genre: string
   bio: string
   image: string
-  imageStyle: Record<string, string>
   hasUpcomingEvent: boolean
 }
 
@@ -21,8 +20,7 @@ const artists: Artist[] = [
     origin: 'Afghanistan',
     genre: 'Folk · Traditional',
     bio: 'A voice rooted in Afghan tradition, blending timeless folk melodies with heartfelt storytelling.',
-    image: '/images/hero.jpeg',
-    imageStyle: { objectPosition: '0% center', transform: 'scale(1.7)', transformOrigin: '5% center' },
+    image: '/images/artists/habib-qaderi.jpg',
     hasUpcomingEvent: true,
   },
   {
@@ -31,8 +29,7 @@ const artists: Artist[] = [
     origin: 'Afghanistan',
     genre: 'Folk · Classical',
     bio: 'One of Afghanistan\'s most celebrated artists, renowned for classical arrangements and powerful live performances.',
-    image: '/images/hero.jpeg',
-    imageStyle: { objectPosition: '37% center', transform: 'scale(1.7)', transformOrigin: '37% center' },
+    image: '/images/artists/farahad-darya.jpeg',
     hasUpcomingEvent: true,
   },
   {
@@ -41,8 +38,7 @@ const artists: Artist[] = [
     origin: 'Afghanistan',
     genre: 'Pop · Folk',
     bio: 'A rising force blending contemporary pop with Afghan folk roots, captivating audiences across Europe.',
-    image: '/images/hero.jpeg',
-    imageStyle: { objectPosition: '63% center', transform: 'scale(1.7)', transformOrigin: '63% center' },
+    image: '/images/artists/aryana.jpeg',
     hasUpcomingEvent: true,
   },
   {
@@ -51,8 +47,7 @@ const artists: Artist[] = [
     origin: 'Afghanistan',
     genre: 'Pop · Contemporary',
     bio: 'A bold, contemporary sound reshaping modern Afghan pop for a new generation of listeners.',
-    image: '/images/hero.jpeg',
-    imageStyle: { objectPosition: '90% center', transform: 'scale(1.7)', transformOrigin: '90% center' },
+    image: '/images/artists/valy.jpeg',
     hasUpcomingEvent: true,
   },
 ]
@@ -135,11 +130,15 @@ onMounted(async () => {
 
                 <!-- Hover zoom wrapper -->
                 <div class="absolute inset-0 transition-transform duration-700 ease-expo-out group-hover:scale-[1.06]">
-                  <img
+                  <NuxtImg
                     :src="artist.image"
                     :alt="artist.name"
                     class="absolute inset-0 w-full h-full object-cover"
-                    :style="artist.imageStyle"
+                    width="480"
+                    height="640"
+                    format="webp"
+                    quality="80"
+                    loading="lazy"
                   />
                 </div>
 
