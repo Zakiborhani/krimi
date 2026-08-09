@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 useHead({ title: 'About — Karimi Entertainment' })
 
@@ -9,6 +9,8 @@ const statsRef = ref<HTMLElement | null>(null)
 
 const audioRef = ref<HTMLAudioElement | null>(null)
 const isPlaying = ref(false)
+const currentTime = ref(0)
+const duration = ref(0)
 
 const toggleAudio = () => {
   if (!audioRef.value) return
@@ -21,7 +23,17 @@ const toggleAudio = () => {
 
 const onAudioPlay = () => { isPlaying.value = true }
 const onAudioPause = () => { isPlaying.value = false }
-const onAudioEnded = () => { isPlaying.value = false }
+const onAudioEnded = () => { isPlaying.value = false; currentTime.value = 0 }
+const onTimeUpdate = () => { if (audioRef.value) currentTime.value = audioRef.value.currentTime }
+const onLoadedMetadata = () => { if (audioRef.value) duration.value = audioRef.value.duration }
+
+const progressPercent = computed(() => duration.value ? (currentTime.value / duration.value) * 100 : 0)
+const remainingLabel = computed(() => {
+  const remaining = Math.max(duration.value - currentTime.value, 0)
+  const mins = Math.floor(remaining / 60)
+  const secs = Math.floor(remaining % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+})
 
 onMounted(async () => {
   if (process.client) {
@@ -153,10 +165,12 @@ onMounted(async () => {
               <audio
                 ref="audioRef"
                 src="/audio/founder-intro.mp3"
-                preload="none"
+                preload="metadata"
                 @play="onAudioPlay"
                 @pause="onAudioPause"
                 @ended="onAudioEnded"
+                @timeupdate="onTimeUpdate"
+                @loadedmetadata="onLoadedMetadata"
               />
 
               <!-- Play button overlay -->
@@ -179,21 +193,37 @@ onMounted(async () => {
                 </span>
               </button>
 
-              <!-- Listening badge -->
+              <!-- Bottom overlay: listening indicator + time remaining + progress -->
               <div
-                v-if="isPlaying"
-                class="absolute top-4 left-4 flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase font-sans text-bg-dark bg-gold rounded-full px-4 py-1.5"
+                v-if="isPlaying || currentTime > 0"
+                class="absolute bottom-0 left-0 right-0 px-4 pb-3 pt-8 bg-gradient-to-t from-bg-dark/90 via-bg-dark/50 to-transparent pointer-events-none"
               >
-                <span class="flex items-end gap-0.5 h-2.5">
-                  <span class="w-0.5 bg-bg-dark audio-bar audio-bar-1" />
-                  <span class="w-0.5 bg-bg-dark audio-bar audio-bar-2" />
-                  <span class="w-0.5 bg-bg-dark audio-bar audio-bar-3" />
-                </span>
-                Listening
+                <div class="flex items-center justify-between mb-2">
+                  <div v-if="isPlaying" class="flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase font-sans text-gold">
+                    <span class="flex items-end gap-0.5 h-2.5">
+                      <span class="w-0.5 bg-gold audio-bar audio-bar-1" />
+                      <span class="w-0.5 bg-gold audio-bar audio-bar-2" />
+                      <span class="w-0.5 bg-gold audio-bar audio-bar-3" />
+                    </span>
+                    Listening
+                  </div>
+                  <span v-else class="text-[9px] tracking-[0.25em] uppercase font-sans text-ink-light/50">
+                    Paused
+                  </span>
+                  <span class="text-[9px] tracking-[0.15em] font-sans text-ink-light/70 tabular-nums">
+                    -{{ remainingLabel }}
+                  </span>
+                </div>
+                <div class="h-0.5 w-full bg-ink-light/20 rounded-full overflow-hidden">
+                  <div
+                    class="h-full bg-gold rounded-full transition-[width] duration-150 ease-linear"
+                    :style="{ width: progressPercent + '%' }"
+                  />
+                </div>
               </div>
 
               <!-- Gold bottom accent -->
-              <div class="absolute bottom-0 left-0 right-0 h-px bg-gold/50" />
+              <div v-if="!(isPlaying || currentTime > 0)" class="absolute bottom-0 left-0 right-0 h-px bg-gold/50" />
             </div>
           </div>
 
