@@ -173,57 +173,47 @@ onMounted(async () => {
                 @loadedmetadata="onLoadedMetadata"
               />
 
-              <!-- Play button overlay -->
-              <button
-                type="button"
-                @click="toggleAudio"
-                class="absolute inset-0 flex items-center justify-center bg-bg-dark/0 hover:bg-bg-dark/20 transition-colors duration-400 group/audio"
-                :aria-label="isPlaying ? 'Pause founder introduction' : 'Play founder introduction'"
-              >
-                <span
-                  class="flex items-center justify-center w-16 h-16 rounded-full bg-gold/90 text-bg-dark shadow-lg transition-transform duration-400 group-hover/audio:scale-110"
-                  :class="{ 'scale-105': isPlaying }"
+              <!-- Spotify-style mini player -->
+              <div class="absolute bottom-0 left-0 right-0 px-3 pb-3 pt-8 bg-gradient-to-t from-bg-dark/90 via-bg-dark/50 to-transparent flex items-center gap-3">
+                <button
+                  type="button"
+                  @click="toggleAudio"
+                  class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gold text-bg-dark shadow-lg transition-transform duration-300 hover:scale-105 active:scale-95"
+                  :aria-label="isPlaying ? 'Pause founder introduction' : 'Play founder introduction'"
                 >
-                  <svg v-if="!isPlaying" viewBox="0 0 24 24" class="w-6 h-6 ml-1" fill="currentColor">
+                  <svg v-if="!isPlaying" viewBox="0 0 24 24" class="w-3 h-3 ml-0.5" fill="currentColor">
                     <path d="M8 5v14l11-7z" />
                   </svg>
-                  <svg v-else viewBox="0 0 24 24" class="w-6 h-6" fill="currentColor">
+                  <svg v-else viewBox="0 0 24 24" class="w-3 h-3" fill="currentColor">
                     <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
                   </svg>
-                </span>
-              </button>
+                </button>
 
-              <!-- Bottom overlay: listening indicator + time remaining + progress -->
-              <div
-                v-if="isPlaying || currentTime > 0"
-                class="absolute bottom-0 left-0 right-0 px-4 pb-3 pt-8 bg-gradient-to-t from-bg-dark/90 via-bg-dark/50 to-transparent pointer-events-none"
-              >
-                <div class="flex items-center justify-between mb-2">
-                  <div v-if="isPlaying" class="flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase font-sans text-gold">
-                    <span class="flex items-end gap-0.5 h-2.5">
-                      <span class="w-0.5 bg-gold audio-bar audio-bar-1" />
-                      <span class="w-0.5 bg-gold audio-bar audio-bar-2" />
-                      <span class="w-0.5 bg-gold audio-bar audio-bar-3" />
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between mb-1">
+                    <div v-if="isPlaying" class="flex items-center gap-1.5 text-[9px] tracking-[0.2em] uppercase font-sans text-gold">
+                      <span class="flex items-end gap-0.5 h-2">
+                        <span class="w-0.5 bg-gold audio-bar audio-bar-1" />
+                        <span class="w-0.5 bg-gold audio-bar audio-bar-2" />
+                        <span class="w-0.5 bg-gold audio-bar audio-bar-3" />
+                      </span>
+                      Listening
+                    </div>
+                    <span v-else class="text-[9px] tracking-[0.2em] uppercase font-sans text-ink-light/50">
+                      Founder Intro
                     </span>
-                    Listening
+                    <span class="text-[9px] tracking-[0.1em] font-sans text-ink-light/70 tabular-nums">
+                      -{{ remainingLabel }}
+                    </span>
                   </div>
-                  <span v-else class="text-[9px] tracking-[0.25em] uppercase font-sans text-ink-light/50">
-                    Paused
-                  </span>
-                  <span class="text-[9px] tracking-[0.15em] font-sans text-ink-light/70 tabular-nums">
-                    -{{ remainingLabel }}
-                  </span>
-                </div>
-                <div class="h-0.5 w-full bg-ink-light/20 rounded-full overflow-hidden">
-                  <div
-                    class="h-full bg-gold rounded-full transition-[width] duration-150 ease-linear"
-                    :style="{ width: progressPercent + '%' }"
-                  />
+                  <div class="h-0.5 w-full bg-ink-light/20 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-gold rounded-full transition-[width] duration-150 ease-linear"
+                      :style="{ width: progressPercent + '%' }"
+                    />
+                  </div>
                 </div>
               </div>
-
-              <!-- Gold bottom accent -->
-              <div v-if="!(isPlaying || currentTime > 0)" class="absolute bottom-0 left-0 right-0 h-px bg-gold/50" />
             </div>
           </div>
 
