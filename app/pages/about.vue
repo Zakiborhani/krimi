@@ -7,6 +7,22 @@ const storyRef = ref<HTMLElement | null>(null)
 const founderRef = ref<HTMLElement | null>(null)
 const statsRef = ref<HTMLElement | null>(null)
 
+const audioRef = ref<HTMLAudioElement | null>(null)
+const isPlaying = ref(false)
+
+const toggleAudio = () => {
+  if (!audioRef.value) return
+  if (isPlaying.value) {
+    audioRef.value.pause()
+  } else {
+    audioRef.value.play()
+  }
+}
+
+const onAudioPlay = () => { isPlaying.value = true }
+const onAudioPause = () => { isPlaying.value = false }
+const onAudioEnded = () => { isPlaying.value = false }
+
 onMounted(async () => {
   if (process.client) {
     const { gsap } = await import('gsap')
@@ -133,6 +149,49 @@ onMounted(async () => {
                 alt="Karim Karimi — Founder of Karimi Entertainment"
                 class="w-full h-full object-cover object-center grayscale"
               />
+
+              <audio
+                ref="audioRef"
+                src="/audio/founder-intro.mp3"
+                preload="none"
+                @play="onAudioPlay"
+                @pause="onAudioPause"
+                @ended="onAudioEnded"
+              />
+
+              <!-- Play button overlay -->
+              <button
+                type="button"
+                @click="toggleAudio"
+                class="absolute inset-0 flex items-center justify-center bg-bg-dark/0 hover:bg-bg-dark/20 transition-colors duration-400 group/audio"
+                :aria-label="isPlaying ? 'Pause founder introduction' : 'Play founder introduction'"
+              >
+                <span
+                  class="flex items-center justify-center w-16 h-16 rounded-full bg-gold/90 text-bg-dark shadow-lg transition-transform duration-400 group-hover/audio:scale-110"
+                  :class="{ 'scale-105': isPlaying }"
+                >
+                  <svg v-if="!isPlaying" viewBox="0 0 24 24" class="w-6 h-6 ml-1" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  <svg v-else viewBox="0 0 24 24" class="w-6 h-6" fill="currentColor">
+                    <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+                  </svg>
+                </span>
+              </button>
+
+              <!-- Listening badge -->
+              <div
+                v-if="isPlaying"
+                class="absolute top-4 left-4 flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase font-sans text-bg-dark bg-gold rounded-full px-4 py-1.5"
+              >
+                <span class="flex items-end gap-0.5 h-2.5">
+                  <span class="w-0.5 bg-bg-dark audio-bar audio-bar-1" />
+                  <span class="w-0.5 bg-bg-dark audio-bar audio-bar-2" />
+                  <span class="w-0.5 bg-bg-dark audio-bar audio-bar-3" />
+                </span>
+                Listening
+              </div>
+
               <!-- Gold bottom accent -->
               <div class="absolute bottom-0 left-0 right-0 h-px bg-gold/50" />
             </div>
@@ -186,5 +245,17 @@ onMounted(async () => {
 .founder-cta {
   transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.audio-bar {
+  animation: audio-bar-bounce 0.9s ease-in-out infinite;
+}
+.audio-bar-1 { height: 40%; animation-delay: 0s; }
+.audio-bar-2 { height: 100%; animation-delay: 0.15s; }
+.audio-bar-3 { height: 65%; animation-delay: 0.3s; }
+
+@keyframes audio-bar-bounce {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
 }
 </style>
