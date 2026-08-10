@@ -39,7 +39,7 @@ const remainingLabel = computed(() => {
 let founderAudioObserver: IntersectionObserver | null = null
 
 onMounted(async () => {
-  if (process.client) {
+  if (import.meta.client) {
     if (founderPhotoRef.value) {
       founderAudioObserver = new IntersectionObserver(
         ([entry]) => {

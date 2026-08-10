@@ -61,7 +61,7 @@ const setCardRef = (el: HTMLElement | null, index: number) => {
 }
 
 onMounted(async () => {
-  if (process.client) {
+  if (import.meta.client) {
     const { gsap } = await import('gsap')
     const { ScrollTrigger } = await import('gsap/ScrollTrigger')
     gsap.registerPlugin(ScrollTrigger)

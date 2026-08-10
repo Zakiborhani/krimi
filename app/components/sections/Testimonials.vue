@@ -54,6 +54,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 
 const startLerp = (index: number) => {
   const state = lerpState[index]
+  if (!state) return
   if (state.raf) cancelAnimationFrame(state.raf)
 
   const tick = () => {
@@ -101,7 +102,7 @@ const onMouseLeave = (index: number) => {
 }
 
 onMounted(async () => {
-  if (process.client) {
+  if (import.meta.client) {
     const { gsap } = await import('gsap')
     const { ScrollTrigger } = await import('gsap/ScrollTrigger')
     gsap.registerPlugin(ScrollTrigger)
