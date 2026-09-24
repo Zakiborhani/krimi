@@ -12,7 +12,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: '1',
-    quote: 'An unforgettable evening. The atmosphere, the music, the energy — it felt like being transported back home while standing in the heart of Amsterdam.',
+    quote: 'An unforgettable evening. The atmosphere, the music, the energy — it felt like being transported back home while standing in the heart of Stockholm.',
     author: 'Layla M.',
     location: 'Stockholm',
     event: 'Valy in Stockholm',
