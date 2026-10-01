@@ -1,113 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-
-interface Event {
-  id: string
-  date: string
-  month: string
-  year: string
-  artist: string
-  subtitle?: string
-  city: string
-  country: string
-  venue: string
-  image: string | null
-  badge: string
-  badgeColor: 'gold' | 'crimson' | 'dark'
-  isSoldOut: boolean
-  ticketUrl: string
-}
-
-const events: Event[] = [
-  {
-    id: '1',
-    date: '04',
-    month: 'Sep',
-    year: '2025',
-    artist: 'Aryana',
-    subtitle: 'Ladies Only · Unstoppable World Tour',
-    city: 'Rotterdam',
-    country: 'Netherlands',
-    venue: 'Laurenskerk Rotterdam',
-    image: '/images/rotterdam.jpeg',
-    badge: 'Ladies Only',
-    badgeColor: 'gold',
-    isSoldOut: false,
-    ticketUrl: 'https://www.aryanatour.com',
-  },
-  {
-    id: '2',
-    date: '05',
-    month: 'Sep',
-    year: '2025',
-    artist: 'Aryana',
-    subtitle: 'Ladies Only · Unstoppable World Tour',
-    city: 'Stockholm',
-    country: 'Sweden',
-    venue: 'Fryshuset Arenan',
-    image: '/images/stockholm.jpeg',
-    badge: 'Ladies Only',
-    badgeColor: 'gold',
-    isSoldOut: false,
-    ticketUrl: 'https://www.aryanatour.com',
-  },
-  {
-    id: '3',
-    date: '11',
-    month: 'Dec',
-    year: '2026',
-    artist: 'Kabura Cruise',
-    subtitle: 'Habib Qaderi · Farhad Darya · Aryana · Valy',
-    city: 'Stockholm → Tallinn',
-    country: '40 Hours, 2 Nights',
-    venue: 'The Biggest Afghan Concert Ever',
-    image: '/images/stockholm-talinn.jpeg',
-    badge: '4 Headliners',
-    badgeColor: 'crimson',
-    isSoldOut: false,
-    ticketUrl: 'https://www.tallink.com/sv/hitta-resa/kryssning/specialkryssningar/kabura-cruise',
-  },
-  {
-    id: '4',
-    date: '30',
-    month: 'Oct',
-    year: '2026',
-    artist: 'Halloween Party',
-    subtitle: 'Live Performance: DJ Mori · Early Bird 199 kr',
-    city: 'Stockholm',
-    country: 'Sweden',
-    venue: 'Colosseum Nightclub, Johanneshov',
-    image: '/images/halloween-stockholm.jpeg',
-    badge: '18+',
-    badgeColor: 'crimson',
-    isSoldOut: false,
-    ticketUrl: 'https://karimi-entertainment.tickivo.app/233619/halloween-party-stockholm',
-  },
-]
-
-// Split events by date — anything before today drops into "Previous Events".
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-const eventTime = (event: Event): number => {
-  const monthIndex = MONTHS.indexOf(event.month)
-  return new Date(Number(event.year), monthIndex < 0 ? 0 : monthIndex, Number(event.date)).getTime()
-}
-
-const startOfToday = (() => {
-  const d = new Date()
-  d.setHours(0, 0, 0, 0)
-  return d.getTime()
-})()
+import { events, eventTime, isPastEvent, type Event } from '~/data/events'
 
 const upcomingEvents = computed(() =>
   events
-    .filter((event) => eventTime(event) >= startOfToday)
+    .filter((event) => !isPastEvent(event))
     .sort((a, b) => eventTime(a) - eventTime(b))
 )
 
 const pastEvents = computed(() =>
   events
-    .filter((event) => eventTime(event) < startOfToday)
+    .filter((event) => isPastEvent(event))
     .sort((a, b) => eventTime(b) - eventTime(a))
 )
 
@@ -197,10 +100,17 @@ onMounted(async () => {
       <div v-if="upcomingEvents.length" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         <div
           v-for="(event, index) in upcomingEvents"
-          :key="event.id"
+          :key="event.slug"
           :ref="(el) => setCardRef(el as HTMLElement, index)"
           class="group relative flex flex-col bg-surface rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,36,41,0.12)] hover:shadow-[0_12px_40px_rgba(0,36,41,0.18)] transition-shadow duration-500"
         >
+
+          <!-- Whole card opens the event page -->
+          <NuxtLink
+            :to="`/events/${event.slug}`"
+            :aria-label="`${event.artist} — ${event.city}, ${event.month} ${event.date}`"
+            class="absolute inset-0 z-[5] rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+          />
 
           <!-- Image -->
           <div class="relative w-full overflow-hidden bg-elevated">
@@ -273,7 +183,7 @@ onMounted(async () => {
               <a
                 v-else
                 :href="event.ticketUrl"
-                class="inline-flex items-center gap-3 text-[10px] tracking-[0.2em] uppercase font-sans text-ink border-b border-ink/30 group-hover:text-gold group-hover:border-gold transition-colors duration-300"
+                class="relative z-10 inline-flex items-center gap-3 text-[10px] tracking-[0.2em] uppercase font-sans text-ink border-b border-ink/30 group-hover:text-gold group-hover:border-gold transition-colors duration-300"
               >
                 <span>Get Tickets</span>
                 <span class="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
@@ -308,9 +218,16 @@ onMounted(async () => {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div
             v-for="event in pastEvents"
-            :key="event.id"
+            :key="event.slug"
             class="group relative flex flex-col bg-surface/60 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,36,41,0.08)] opacity-80"
           >
+
+              <!-- Whole card opens the event page -->
+            <NuxtLink
+              :to="`/events/${event.slug}`"
+              :aria-label="`${event.artist} — ${event.city}, ${event.month} ${event.date}`"
+              class="absolute inset-0 z-[5] rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+            />
 
             <!-- Image -->
             <div class="relative w-full overflow-hidden bg-elevated">
