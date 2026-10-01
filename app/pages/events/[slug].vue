@@ -134,10 +134,10 @@ onBeforeUnmount(() => {
         <div ref="infoRef" class="flex-1 px-6 md:px-12 lg:px-16 py-10 md:py-14">
 
           <!-- Date / time chips -->
-          <div class="flex flex-wrap text-[11px] tracking-[0.12em] uppercase font-sans mb-8">
-            <span class="bg-ink-light text-bg-dark px-3 py-1.5 rounded-l-md">{{ dateChip }}</span>
-            <span v-if="event.time" class="bg-bg-dark-elevated text-ink-light border border-gold/40 px-3 py-1.5">{{ event.time }}</span>
-            <span v-if="event.timezone" class="border border-ink-light/20 text-ink-light/60 px-3 py-1.5 rounded-r-md">{{ event.timezone }}</span>
+          <div class="flex flex-wrap gap-2 text-[11px] tracking-[0.12em] uppercase font-sans mb-8">
+            <span class="bg-ink-light text-bg-dark px-3 py-1.5 rounded-md">{{ dateChip }}</span>
+            <span v-if="event.time" class="bg-bg-dark-elevated text-ink-light border border-gold/40 px-3 py-1.5 rounded-md">{{ event.time }}</span>
+            <span v-if="event.timezone" class="border border-ink-light/20 text-ink-light/60 px-3 py-1.5 rounded-md">{{ event.timezone }}</span>
           </div>
 
           <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] mb-5">
