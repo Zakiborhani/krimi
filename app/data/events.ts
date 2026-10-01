@@ -3,6 +3,13 @@ export interface EventPrice {
   amount: string
 }
 
+export interface EventLocation {
+  name: string
+  address: string
+  // Search string for the map embed and directions link
+  mapQuery: string
+}
+
 export interface Event {
   slug: string
   date: string
@@ -19,13 +26,19 @@ export interface Event {
   isSoldOut: boolean
   ticketUrl: string
   // Optional details shown on the event's own page
+  startsAt?: string // ISO with offset, drives the countdown
   time?: string
-  address?: string
+  timezone?: string
+  organizer?: string
+  location?: EventLocation
   lineup?: string[]
   prices?: EventPrice[]
+  fromPrice?: string
+  priceNote?: string
   ageLimit?: string
   infoPhone?: string
-  description?: string
+  description?: string[]
+  goodToKnow?: string[]
 }
 
 export const events: Event[] = [
@@ -78,7 +91,27 @@ export const events: Event[] = [
     badgeColor: 'crimson',
     isSoldOut: false,
     ticketUrl: 'https://www.tallink.com/sv/hitta-resa/kryssning/specialkryssningar/kabura-cruise',
-    lineup: ['Habib Qaderi', 'Farhad Darya', 'Aryana', 'Valy'],
+    startsAt: '2026-12-11T17:30:00+01:00',
+    time: 'Departs 17:30 · 40 hours',
+    timezone: 'UTC+1',
+    location: {
+      name: 'Baltic Queen · Värtaterminalen',
+      address: 'Värtahamnen, Stockholm → Tallinn',
+      mapQuery: 'Värtaterminalen, Stockholm',
+    },
+    lineup: ['Farhad Darya', 'Aryana Sayeed', 'Habib Qaderi', 'Valy Hedjasi', '+ 3 DJs'],
+    fromPrice: '1 650 kr',
+    priceNote: 'per person · E-Standard inside cabin, 4 sharing · fuel & emission surcharge added',
+    ageLimit: 'Under 18 welcome with a parent or legal guardian',
+    description: [
+      'Welcome to the biggest Afghan concert ever — a historic gathering of Afghan music and culture on board the Baltic Queen.',
+      'A 40-hour cruise from Stockholm to Tallinn with live concerts by Farhad Darya, Aryana Sayeed, Habib Qaderi and Valy Hedjasi, plus three DJs, along with the ship’s restaurants, shopping and entertainment.',
+    ],
+    goodToKnow: [
+      'Passport required — the cruise visits Tallinn, Estonia',
+      'Tickets are booked through Tallink Silja',
+      'Bookings must be paid within 14 days, or 28 days before departure, whichever comes first',
+    ],
   },
   {
     slug: 'halloween-party-stockholm-2026',
@@ -95,16 +128,26 @@ export const events: Event[] = [
     badgeColor: 'crimson',
     isSoldOut: false,
     ticketUrl: 'https://karimi-entertainment.tickivo.app/233619/halloween-party-stockholm',
+    startsAt: '2026-10-30T22:00:00+01:00',
     time: '22:00 – 03:00',
-    address: 'Arenavägen 75, 121 77 Johanneshov',
+    timezone: 'UTC+1',
+    location: {
+      name: 'Colosseum Nightclub',
+      address: 'Arenavägen 75, 121 77 Johanneshov',
+      mapQuery: 'Arenavägen 75, 121 77 Johanneshov',
+    },
     lineup: ['DJ Mori'],
     prices: [
       { label: 'Early Bird', amount: '199 kr' },
       { label: 'At the door', amount: '299 kr' },
     ],
+    fromPrice: '199 kr',
     ageLimit: '18+',
     infoPhone: '072 91 90 716',
-    description: 'A dark, high-energy Halloween night at Colosseum Nightclub with a live performance by DJ Mori.',
+    description: [
+      'Karimi Entertainment presents Halloween Party — a dark, high-energy Halloween night at Colosseum Nightclub in Stockholm.',
+      'Expect a heavy atmosphere, Halloween vibes, music, partying and a live performance by DJ MORI. Put on your best Halloween outfit and come ready for an unforgettable night.',
+    ],
   },
 ]
 
@@ -125,6 +168,8 @@ export const startOfToday = (): number => {
 }
 
 export const isPastEvent = (event: Event): boolean => eventTime(event) < startOfToday()
+
+export const DEFAULT_ORGANIZER = 'Karimi Entertainment'
 
 export const findEvent = (slug: string): Event | undefined =>
   events.find((event) => event.slug === slug)
