@@ -67,6 +67,22 @@ const events: Event[] = [
     isSoldOut: false,
     ticketUrl: 'https://www.tallink.com/sv/hitta-resa/kryssning/specialkryssningar/kabura-cruise',
   },
+  {
+    id: '4',
+    date: '30',
+    month: 'Oct',
+    year: '2026',
+    artist: 'Halloween Party',
+    subtitle: 'Live Performance: DJ Mori · Early Bird 199 kr',
+    city: 'Stockholm',
+    country: 'Sweden',
+    venue: 'Colosseum Nightclub, Johanneshov',
+    image: '/images/halloween-stockholm.jpeg',
+    badge: '18+',
+    badgeColor: 'crimson',
+    isSoldOut: false,
+    ticketUrl: 'https://karimi-entertainment.tickivo.app/233619/halloween-party-stockholm',
+  },
 ]
 
 // Split events by date — anything before today drops into "Previous Events".
