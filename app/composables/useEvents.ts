@@ -44,8 +44,8 @@ function toEvent(row: CmsRow): Event | null {
   })
   const lineup = cmsText(row.lineup).split(',').map(s => s.trim()).filter(Boolean)
   const description = cmsParagraphs(row.description)
-  const goodToKnow = cmsLines(row.goodToKnow)
-  const badgeColor = cmsText(row.badgeColor).toLowerCase() as Event['badgeColor']
+  const goodToKnow = cmsLines(row['good-to-know'])
+  const badgeColor = cmsText(row['badge-color']).toLowerCase() as Event['badgeColor']
   const opt = (v: string) => v || undefined
 
   return {
@@ -61,8 +61,8 @@ function toEvent(row: CmsRow): Event | null {
     image: cmsImage(row.image) || null,
     badge: cmsText(row.badge),
     badgeColor: BADGE_COLORS.includes(badgeColor) ? badgeColor : 'dark',
-    isSoldOut: row.soldOut === true,
-    ticketUrl: cmsText(row.ticketUrl),
+    isSoldOut: row['sold-out'] === true,
+    ticketUrl: cmsText(row['ticket-url']),
     startsAt,
     time: opt(cmsText(row.time)),
     timezone,
@@ -71,9 +71,9 @@ function toEvent(row: CmsRow): Event | null {
       : undefined,
     lineup: lineup.length ? lineup : undefined,
     prices: prices.length ? prices : undefined,
-    fromPrice: opt(cmsText(row.fromPrice)),
-    priceNote: opt(cmsText(row.priceNote)),
-    infoPhone: opt(cmsText(row.infoPhone)),
+    fromPrice: opt(cmsText(row['from-price'])),
+    priceNote: opt(cmsText(row['price-note'])),
+    infoPhone: opt(cmsText(row['info-phone'])),
     description: description.length ? description : undefined,
     goodToKnow: goodToKnow.length ? goodToKnow : undefined,
   }
