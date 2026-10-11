@@ -1,16 +1,17 @@
 <script setup lang="ts">
 const currentYear = new Date().getFullYear()
 
+const { text } = await useCms()
+const email = text('contact.email')
+const instagram = text('social.instagram')
+const facebook = text('social.facebook')
+const tagline = text('footer.text')
+
 const navLinks = [
   { label: 'Events', to: '/#events' },
   { label: 'Artists', to: '/artists' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
-]
-
-const socials = [
-  { label: 'Instagram', url: '#' },
-  { label: 'Facebook', url: '#' },
 ]
 </script>
 
@@ -36,7 +37,7 @@ const socials = [
             >
           </div>
           <p class="text-sm font-sans font-light text-ink-muted leading-relaxed max-w-xs">
-            Bringing the finest Afghan & Iranian artists to stages across Europe.
+            {{ tagline }}
           </p>
           <a
             href="/#events"
@@ -72,7 +73,8 @@ const socials = [
 
             <!-- Instagram -->
             <a
-              href="#"
+              v-if="instagram"
+              :href="instagram"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -87,7 +89,8 @@ const socials = [
 
             <!-- Facebook -->
             <a
-              href="#"
+              v-if="facebook"
+              :href="facebook"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -101,7 +104,7 @@ const socials = [
           </div>
           <div class="mt-4 pt-4 border-t border-ink/15">
             <p class="text-[10px] tracking-[0.15em] font-sans text-ink/65">
-              info@karimientertainment.com
+              {{ email }}
             </p>
           </div>
         </div>

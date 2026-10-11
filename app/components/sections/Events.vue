@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { events, eventTime, isPastEvent, type Event } from '~/data/events'
+import { eventTime, isPastEvent, type Event } from '~/data/events'
+
+const { events } = await useEvents()
 
 const upcomingEvents = computed(() =>
   events

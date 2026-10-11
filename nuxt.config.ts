@@ -18,10 +18,26 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  // Dara IT portal CMS (v2). The customer id is public. The portal fetches the
+  // manifest from /.well-known/dara-cms.json, so no keys are needed.
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '',
+      daraCms: {
+        customerId: 'e444fbfa-6fbe-46ef-b6c6-ac005adc249c',
+        portalUrl: 'https://portal-dara-it.com',
+      },
     },
+  },
+
+  // Events, contact details and the footer come from the portal (the footer is
+  // on every page); re-render at most once a minute.
+  routeRules: {
+    '/': { isr: 60 },
+    '/about': { isr: 60 },
+    '/artists': { isr: 60 },
+    '/contact': { isr: 60 },
+    '/events/**': { isr: 60 },
   },
 
   app: {

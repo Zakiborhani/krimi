@@ -3,6 +3,12 @@ import { onMounted, ref } from 'vue'
 
 useHead({ title: 'Contact — Karimi Entertainment' })
 
+const { text } = await useCms()
+const phone = text('contact.phone')
+const email = text('contact.email')
+const instagram = text('social.instagram')
+const facebook = text('social.facebook')
+
 const sectionRef = ref<HTMLElement | null>(null)
 const headerRef = ref<HTMLElement | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
@@ -60,7 +66,7 @@ onMounted(async () => {
 
           <!-- Phone -->
           <a
-            href="tel:+46729190716"
+            :href="`tel:${phone.replace(/[^\d+]/g, '')}`"
             class="contact-item group flex items-center gap-5"
           >
             <div class="hidden sm:block w-10 h-px bg-crimson/30 group-hover:bg-crimson transition-colors duration-400" />
@@ -69,7 +75,7 @@ onMounted(async () => {
                 Phone
               </span>
               <span class="font-display text-2xl md:text-3xl font-light text-ink/75 group-hover:text-ink tracking-wide transition-colors duration-400">
-                +46 72 919 07 16
+                {{ phone }}
               </span>
             </div>
             <div class="hidden sm:block w-10 h-px bg-crimson/30 group-hover:bg-crimson transition-colors duration-400" />
@@ -80,7 +86,7 @@ onMounted(async () => {
 
           <!-- Email -->
           <a
-            href="mailto:info@karimientertainment.com"
+            :href="`mailto:${email}`"
             class="contact-item group flex items-center gap-5"
           >
             <div class="hidden sm:block w-10 h-px bg-crimson/30 group-hover:bg-crimson transition-colors duration-400" />
@@ -89,7 +95,7 @@ onMounted(async () => {
                 Email
               </span>
               <span class="font-display text-base md:text-2xl font-light text-ink/75 group-hover:text-ink tracking-wide transition-colors duration-400">
-                info@karimientertainment.com
+                {{ email }}
               </span>
             </div>
             <div class="hidden sm:block w-10 h-px bg-crimson/30 group-hover:bg-crimson transition-colors duration-400" />
@@ -101,7 +107,8 @@ onMounted(async () => {
           <!-- Social Icons -->
           <div class="flex items-center gap-8">
             <a
-              href="https://www.instagram.com/karimi_entertainment/"
+              v-if="instagram"
+              :href="instagram"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -116,7 +123,8 @@ onMounted(async () => {
             </a>
 
             <a
-              href="https://www.facebook.com/karimientertainment/"
+              v-if="facebook"
+              :href="facebook"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"

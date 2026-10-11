@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { DEFAULT_ORGANIZER, eventDate, findEvent, isPastEvent, type Event } from '~/data/events'
+import { DEFAULT_ORGANIZER, eventDate, isPastEvent, type Event } from '~/data/events'
 
 const route = useRoute()
+const { findEvent } = await useEvents()
 const found = findEvent(String(route.params.slug))
 
 if (!found) {
