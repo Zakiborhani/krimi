@@ -122,6 +122,8 @@ onMounted(async () => {
               v-if="event.image"
               :src="event.image"
               :alt="event.artist"
+              loading="lazy"
+              decoding="async"
               class="w-full h-auto transition-transform duration-[1200ms] ease-power2-out group-hover:scale-105"
             />
 
@@ -237,6 +239,8 @@ onMounted(async () => {
                 v-if="event.image"
                 :src="event.image"
                 :alt="event.artist"
+                loading="lazy"
+                decoding="async"
                 class="w-full h-auto grayscale-[.35]"
               />
               <div

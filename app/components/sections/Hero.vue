@@ -19,14 +19,9 @@ onMounted(() => {
     <!-- Desktop: full screen height -->
     <div class="relative w-full h-[75vh] min-h-[420px] md:h-screen md:min-h-[500px]">
 
-      <!-- Hero Image -->
-      <div
-        :class="[
-          'transition-opacity duration-[1400ms] ease-expo-out',
-          'absolute left-0 right-0 bottom-0 top-[86px] md:top-[84px]',
-          isLoaded || prefersReducedMotion ? 'opacity-100' : 'opacity-0'
-        ]"
-      >
+      <!-- Hero Image — shown at once (no fade-in): it is the page's largest
+           element, and a fade that waits for JavaScript delays the load score -->
+      <div class="absolute left-0 right-0 bottom-0 top-[86px] md:top-[84px]">
         <picture>
           <source media="(min-width: 768px)" srcset="/images/hero1.jpeg" />
           <img

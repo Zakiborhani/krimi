@@ -181,6 +181,8 @@ onBeforeUnmount(() => {
             <div class="relative w-full h-full overflow-hidden rounded-2xl">
               <img
                 src="/images/mrkarim.jpeg"
+                loading="lazy"
+                decoding="async"
                 alt="Karim Karimi — Founder of Karimi Entertainment"
                 class="w-full h-full object-cover object-center grayscale"
               />

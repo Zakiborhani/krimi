@@ -81,11 +81,13 @@ onBeforeUnmount(() => {
             :src="event.image"
             alt=""
             aria-hidden="true"
+            decoding="async"
             class="hidden md:block absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-40"
           />
           <img
             :src="event.image"
             :alt="`${event.artist} poster`"
+            fetchpriority="high"
             :class="['relative w-full h-auto md:h-full md:object-contain', isPast && 'grayscale-[.35]']"
           />
         </template>
