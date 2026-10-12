@@ -6,7 +6,9 @@
 // listed under image.domains in nuxt.config.ts.
 // sizes uses Nuxt Image screen prefixes (xs:100vw md:340px); a bare "100vw"
 // is misread as a 100 px width.
-const props = defineProps<{ src: string; alt: string; sizes?: string; priority?: boolean }>()
+// eager loads the image straight away without raising its priority (e.g. logos
+// in a moving strip, which lazy loading would pop in mid-animation).
+const props = defineProps<{ src: string; alt: string; sizes?: string; priority?: boolean; eager?: boolean }>()
 
 const OPTIMISED_HOSTS = ['portal-dara-it.com', 'www.karimientertainment.com', 'karimientertainment.com']
 
@@ -25,7 +27,7 @@ const optimise = computed(() => {
     :sizes="sizes ?? 'xs:100vw sm:100vw'"
     format="webp"
     quality="78"
-    :loading="priority ? 'eager' : 'lazy'"
+    :loading="priority || eager ? 'eager' : 'lazy'"
     :fetchpriority="priority ? 'high' : undefined"
     :preload="priority"
     decoding="async"
@@ -34,7 +36,7 @@ const optimise = computed(() => {
     v-else
     :src="src"
     :alt="alt"
-    :loading="priority ? 'eager' : 'lazy'"
+    :loading="priority || eager ? 'eager' : 'lazy'"
     :fetchpriority="priority ? 'high' : undefined"
     decoding="async"
   >

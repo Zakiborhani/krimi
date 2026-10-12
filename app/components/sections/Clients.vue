@@ -42,7 +42,7 @@ const strip = [...half, ...half]
       <!-- Scrolling strip — duplicated for seamless loop -->
       <!-- Spacing is padding on each item, not a flex gap, so the two halves are
            exactly equal and the -50% loop point lines up without a visible jump. -->
-      <div class="marquee-track flex items-center whitespace-nowrap" :style="{ animationDuration: `${half.length * 1.8}s` }">
+      <div class="marquee-track flex w-max shrink-0 items-center whitespace-nowrap" :style="{ animationDuration: `${half.length * 1.8}s` }">
         <component
           :is="client.url ? 'a' : 'div'"
           v-for="(client, i) in strip"
@@ -60,6 +60,7 @@ const strip = [...half, ...half]
             :src="client.logo"
             :alt="client.name"
             sizes="240px"
+            eager
             class="h-12 w-auto object-contain"
           />
 
@@ -85,15 +86,20 @@ const strip = [...half, ...half]
 .marquee-track {
   animation: marquee 20s linear infinite;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
-.marquee-track:hover {
-  animation-play-state: paused;
+/* Pause on hover only with a real pointer; on touch screens :hover sticks
+   after a tap and would stop the strip. */
+@media (hover: hover) {
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
