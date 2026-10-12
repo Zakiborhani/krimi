@@ -62,6 +62,7 @@ function toRow(event: Event): CmsRow {
 // Pages in the portal form, in the order the customer sees them.
 const EVENTS = 'Event'
 const ARTISTS = 'Artister'
+const PARTNERS = 'Partners'
 const CONTACT = 'Kontakt'
 const GENERAL = 'Allmänt'
 
@@ -123,6 +124,18 @@ export const cmsManifest = {
         image: SITE_ORIGIN + a.image,
         upcoming: a.hasUpcomingEvent,
       })),
+    },
+    {
+      key: 'partners',
+      label: 'Partners',
+      page: PARTNERS,
+      itemFields: [
+        { key: 'name', type: 'text', label: 'Namn', required: true },
+        { key: 'logo', type: 'image', label: 'Logotyp (valfri – utan logotyp visas namnet)' },
+        { key: 'url', type: 'url', label: 'Länk (valfri)' },
+      ],
+      default: ['Dara-it.com', 'AFAS Live', 'Elbphilharmonie', 'Olympia Paris', 'Royal Albert Hall', 'Ticketmaster', 'Eventim', 'Live Nation']
+        .map(name => ({ name, logo: '', url: '' })),
     },
   ],
 } as const

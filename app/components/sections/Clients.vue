@@ -1,24 +1,18 @@
 <script setup lang="ts">
-interface Client {
-  id: string
-  name: string
-  logo: string | null
-}
-
-const clients: Client[] = [
-  { id: '1', name: 'Dara-it.com', logo: null },
-  { id: '2', name: 'AFAS Live', logo: null },
-  { id: '3', name: 'Elbphilharmonie', logo: null },
-  { id: '4', name: 'Olympia Paris', logo: null },
-  { id: '5', name: 'Royal Albert Hall', logo: null },
-  { id: '6', name: 'Ticketmaster', logo: null },
-  { id: '7', name: 'Eventim', logo: null },
-  { id: '8', name: 'Live Nation', logo: null },
-]
+// Partners as edited in the Dara IT portal (list "partners" in cms/manifest.ts).
+const { list } = await useCms()
+const clients = list('partners')
+  .map((row, i) => ({
+    id: cmsText(row._id) || String(i),
+    name: cmsText(row.name),
+    logo: cmsImage(row.logo),
+    url: cmsText(row.url),
+  }))
+  .filter(c => c.name)
 </script>
 
 <template>
-  <section id="clients" class="relative bg-bg-dark py-8 md:py-12 overflow-hidden">
+  <section v-if="clients.length" id="clients" class="relative bg-bg-dark py-8 md:py-12 overflow-hidden">
 
     <!-- Top rule -->
     <div class="w-full h-px bg-ink-light/8 mb-6 md:mb-14" />
@@ -42,16 +36,23 @@ const clients: Client[] = [
 
       <!-- Scrolling strip — duplicated for seamless loop -->
       <div class="marquee-track flex items-center gap-16 whitespace-nowrap">
-        <div
+        <component
+          :is="client.url ? 'a' : 'div'"
           v-for="(client, i) in [...clients, ...clients]"
           :key="`${client.id}-${i}`"
+          :href="client.url || undefined"
+          :target="client.url ? '_blank' : undefined"
+          :rel="client.url ? 'noopener noreferrer' : undefined"
+          :aria-hidden="i >= clients.length ? 'true' : undefined"
+          :tabindex="i >= clients.length ? -1 : undefined"
           class="flex items-center shrink-0"
         >
           <!-- Real logo -->
-          <img
+          <CmsImg
             v-if="client.logo"
             :src="client.logo"
             :alt="client.name"
+            sizes="240px"
             class="h-12 w-auto object-contain opacity-50 hover:opacity-90 transition-opacity duration-300 grayscale hover:grayscale-0"
           />
 
@@ -62,7 +63,7 @@ const clients: Client[] = [
           >
             {{ client.name }}
           </span>
-        </div>
+        </component>
       </div>
 
     </div>
