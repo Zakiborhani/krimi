@@ -77,17 +77,18 @@ onBeforeUnmount(() => {
       <div class="relative overflow-hidden bg-black md:sticky md:top-[84px] md:h-[calc(100vh-84px)]">
         <template v-if="event.image">
           <!-- Blurred fill so the tall poster never leaves empty bars -->
-          <img
+          <CmsImg
             :src="event.image"
             alt=""
             aria-hidden="true"
-            decoding="async"
+            sizes="400px"
             class="hidden md:block absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-40"
           />
-          <img
+          <CmsImg
             :src="event.image"
             :alt="`${event.artist} poster`"
-            fetchpriority="high"
+            sizes="xs:100vw sm:100vw md:50vw"
+            priority
             :class="['relative w-full h-auto md:h-full md:object-contain', isPast && 'grayscale-[.35]']"
           />
         </template>

@@ -55,6 +55,13 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
   },
 
+  // Vercel image optimisation (via <CmsImg>) for our own images and images
+  // uploaded in the Dara IT portal.
+  image: {
+    domains: ['portal-dara-it.com', 'www.karimientertainment.com', 'karimientertainment.com'],
+    format: ['avif', 'webp'],
+  },
+
   typescript: {
     strict: true,
   },

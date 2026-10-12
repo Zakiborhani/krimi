@@ -118,12 +118,11 @@ onMounted(async () => {
           <div class="relative w-full overflow-hidden bg-elevated">
 
             <!-- Real image -->
-            <img
+            <CmsImg
               v-if="event.image"
               :src="event.image"
               :alt="event.artist"
-              loading="lazy"
-              decoding="async"
+              sizes="xs:100vw sm:100vw md:340px"
               class="w-full h-auto transition-transform duration-[1200ms] ease-power2-out group-hover:scale-105"
             />
 
@@ -235,12 +234,11 @@ onMounted(async () => {
 
             <!-- Image -->
             <div class="relative w-full overflow-hidden bg-elevated">
-              <img
+              <CmsImg
                 v-if="event.image"
                 :src="event.image"
                 :alt="event.artist"
-                loading="lazy"
-                decoding="async"
+                sizes="xs:100vw sm:100vw md:340px"
                 class="w-full h-auto grayscale-[.35]"
               />
               <div

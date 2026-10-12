@@ -83,26 +83,12 @@ onMounted(async () => {
 
                 <!-- Hover zoom wrapper -->
                 <div class="absolute inset-0 transition-transform duration-700 ease-expo-out group-hover:scale-[1.06]">
-                  <!-- Our own images go through Nuxt Image; images uploaded in the
-                       portal are shown as they are -->
-                  <NuxtImg
-                    v-if="artist.image.startsWith('/')"
+                  <CmsImg
+                    v-if="artist.image"
                     :src="artist.image"
                     :alt="artist.name"
                     class="absolute inset-0 w-full h-full object-cover"
-                    width="480"
-                    height="640"
-                    format="webp"
-                    quality="80"
-                    loading="lazy"
-                  />
-                  <img
-                    v-else-if="artist.image"
-                    :src="artist.image"
-                    :alt="artist.name"
-                    class="absolute inset-0 w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
+                    sizes="xs:100vw sm:100vw md:256px"
                   />
                   <div v-else class="absolute inset-0 flex items-center justify-center">
                     <span class="font-display text-6xl font-light text-ink-light/10 uppercase">{{ artist.name.charAt(0) }}</span>
