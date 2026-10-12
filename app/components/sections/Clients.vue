@@ -9,6 +9,11 @@ const clients = list('partners')
     url: cmsText(row.url),
   }))
   .filter(c => c.name)
+
+// One half of the marquee strip; repeated so it is wider than the screen even
+// with few partners. The strip holds two identical halves and slides by -50%.
+const half = Array.from({ length: Math.max(1, Math.ceil(10 / Math.max(clients.length, 1))) }, () => clients).flat()
+const strip = [...half, ...half]
 </script>
 
 <template>
@@ -35,17 +40,19 @@ const clients = list('partners')
       <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-bg-dark to-transparent z-10 pointer-events-none" />
 
       <!-- Scrolling strip — duplicated for seamless loop -->
-      <div class="marquee-track flex items-center gap-16 whitespace-nowrap">
+      <!-- Spacing is padding on each item, not a flex gap, so the two halves are
+           exactly equal and the -50% loop point lines up without a visible jump. -->
+      <div class="marquee-track flex items-center whitespace-nowrap" :style="{ animationDuration: `${half.length * 2.5}s` }">
         <component
           :is="client.url ? 'a' : 'div'"
-          v-for="(client, i) in [...clients, ...clients]"
+          v-for="(client, i) in strip"
           :key="`${client.id}-${i}`"
           :href="client.url || undefined"
           :target="client.url ? '_blank' : undefined"
           :rel="client.url ? 'noopener noreferrer' : undefined"
           :aria-hidden="i >= clients.length ? 'true' : undefined"
           :tabindex="i >= clients.length ? -1 : undefined"
-          class="flex items-center shrink-0"
+          class="flex items-center shrink-0 pr-16"
         >
           <!-- Real logo -->
           <CmsImg
