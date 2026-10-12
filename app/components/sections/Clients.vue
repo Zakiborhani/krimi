@@ -53,13 +53,13 @@ const clients = list('partners')
             :src="client.logo"
             :alt="client.name"
             sizes="240px"
-            class="h-12 w-auto object-contain opacity-50 hover:opacity-90 transition-opacity duration-300 grayscale hover:grayscale-0"
+            class="h-12 w-auto object-contain"
           />
 
           <!-- Text placeholder until real logos are provided -->
           <span
             v-else
-            class="font-display text-3xl font-light tracking-widest text-ink-light/55 hover:text-gold transition-colors duration-500 uppercase select-none"
+            class="font-display text-3xl font-light tracking-widest text-ink-light hover:text-gold transition-colors duration-500 uppercase select-none"
           >
             {{ client.name }}
           </span>
@@ -76,7 +76,7 @@ const clients = list('partners')
 
 <style scoped>
 .marquee-track {
-  animation: marquee 28s linear infinite;
+  animation: marquee 20s linear infinite;
   will-change: transform;
 }
 
