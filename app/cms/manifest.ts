@@ -6,6 +6,7 @@
 //
 // Keys are stable — never rename a key, or saved content stops showing.
 // Spec: friendly-crm-enhancer/docs/cms-v2.md
+import { artists } from '../data/artists'
 import { events, type Event } from '../data/events'
 
 /** Live origin. Default images are sent as absolute URLs because the portal
@@ -60,6 +61,7 @@ function toRow(event: Event): CmsRow {
 
 // Pages in the portal form, in the order the customer sees them.
 const EVENTS = 'Event'
+const ARTISTS = 'Artister'
 const CONTACT = 'Kontakt'
 const GENERAL = 'Allmänt'
 
@@ -100,6 +102,27 @@ export const cmsManifest = {
         { key: 'good-to-know', type: 'richtext', label: 'Bra att veta, en per rad' },
       ],
       default: events.map(toRow),
+    },
+    {
+      key: 'artists',
+      label: 'Artister',
+      page: ARTISTS,
+      itemFields: [
+        { key: 'name', type: 'text', label: 'Namn', required: true },
+        { key: 'origin', type: 'text', label: 'Ursprung (t.ex. Afghanistan)' },
+        { key: 'genre', type: 'text', label: 'Genre (t.ex. Folk · Traditional)' },
+        { key: 'bio', type: 'richtext', label: 'Kort beskrivning' },
+        { key: 'image', type: 'image', label: 'Bild (stående)' },
+        { key: 'upcoming', type: 'boolean', label: 'Visa märket "Upcoming"' },
+      ],
+      default: artists.map(a => ({
+        name: a.name,
+        origin: a.origin,
+        genre: a.genre,
+        bio: a.bio,
+        image: SITE_ORIGIN + a.image,
+        upcoming: a.hasUpcomingEvent,
+      })),
     },
   ],
 } as const

@@ -3,54 +3,7 @@ import { onMounted, ref } from 'vue'
 
 useHead({ title: 'Artists — Karimi Entertainment' })
 
-interface Artist {
-  id: string
-  name: string
-  origin: string
-  genre: string
-  bio: string
-  image: string
-  hasUpcomingEvent: boolean
-}
-
-const artists: Artist[] = [
-  {
-    id: '1',
-    name: 'Habib Qaderi',
-    origin: 'Afghanistan',
-    genre: 'Folk · Traditional',
-    bio: 'A voice rooted in Afghan tradition, blending timeless folk melodies with heartfelt storytelling.',
-    image: '/images/artists/habib-qaderi.jpg',
-    hasUpcomingEvent: true,
-  },
-  {
-    id: '2',
-    name: 'Farhad Darya',
-    origin: 'Afghanistan',
-    genre: 'Folk · Classical',
-    bio: 'One of Afghanistan\'s most celebrated artists, renowned for classical arrangements and powerful live performances.',
-    image: '/images/artists/farahad-darya.jpeg',
-    hasUpcomingEvent: true,
-  },
-  {
-    id: '3',
-    name: 'Aryana',
-    origin: 'Afghanistan',
-    genre: 'Pop · Folk',
-    bio: 'A rising force blending contemporary pop with Afghan folk roots, captivating audiences across Europe.',
-    image: '/images/artists/aryana.jpeg',
-    hasUpcomingEvent: true,
-  },
-  {
-    id: '4',
-    name: 'Valy',
-    origin: 'Afghanistan',
-    genre: 'Pop · Contemporary',
-    bio: 'A bold, contemporary sound reshaping modern Afghan pop for a new generation of listeners.',
-    image: '/images/artists/valy.jpeg',
-    hasUpcomingEvent: true,
-  },
-]
+const { artists } = await useArtists()
 
 const sectionRef = ref<HTMLElement | null>(null)
 const headerRef = ref<HTMLElement | null>(null)
@@ -130,7 +83,10 @@ onMounted(async () => {
 
                 <!-- Hover zoom wrapper -->
                 <div class="absolute inset-0 transition-transform duration-700 ease-expo-out group-hover:scale-[1.06]">
+                  <!-- Our own images go through Nuxt Image; images uploaded in the
+                       portal are shown as they are -->
                   <NuxtImg
+                    v-if="artist.image.startsWith('/')"
                     :src="artist.image"
                     :alt="artist.name"
                     class="absolute inset-0 w-full h-full object-cover"
@@ -140,6 +96,17 @@ onMounted(async () => {
                     quality="80"
                     loading="lazy"
                   />
+                  <img
+                    v-else-if="artist.image"
+                    :src="artist.image"
+                    :alt="artist.name"
+                    class="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div v-else class="absolute inset-0 flex items-center justify-center">
+                    <span class="font-display text-6xl font-light text-ink-light/10 uppercase">{{ artist.name.charAt(0) }}</span>
+                  </div>
                 </div>
 
                 <!-- Hover overlay -->
