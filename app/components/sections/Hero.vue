@@ -7,20 +7,27 @@ const isLoaded = ref(false)
 
 // Mobile hero: a crossfading slider of concert photos. Desktop keeps the
 // single artists image. Only the first slide is in the server HTML (it is
-// the largest element, so it must not wait for JavaScript); the rest are
-// added in the browser on phones only, so desktop never downloads them.
-const slides = [
-  { src: '/images/hero-slides/crowd-1.jpeg', alt: 'Karimi Entertainment concert — a full hall in warm stage light' },
-  { src: '/images/hero-slides/crowd-2.jpeg', alt: 'Karimi Entertainment concert — the audience on its feet' },
-  { src: '/images/hero-slides/crowd-3.jpeg', alt: 'Karimi Entertainment concert — a packed arena in blue light' },
-  { src: '/images/hero-slides/crowd-4.jpeg', alt: 'Karimi Entertainment concert — a sold-out theatre' },
-  { src: '/images/hero-slides/crowd-5.jpeg', alt: 'Karimi Entertainment concert — a historic concert hall' },
-]
+// the largest element, so it must not wait for JavaScript). The others are
+// added in the browser on phones only, one step ahead of the slide shown,
+// so desktop never downloads them and phones only fetch what they show.
+const SLIDE_COUNT = 23
+const slides = Array.from({ length: SLIDE_COUNT }, (_, i) => ({
+  src: `/images/hero-slides/slide-${String(i + 1).padStart(2, '0')}.jpeg`,
+  alt: `Karimi Entertainment live concert — photo ${i + 1}`,
+}))
 const INTERVAL = 5000
 
 const isMobile = ref(false)
 const current = ref(0)
-const extraSlides = computed(() => (isMobile.value ? slides.slice(1) : []))
+const loaded = ref(new Set<number>([0]))
+const extraSlides = computed(() =>
+  isMobile.value ? slides.map((slide, i) => ({ ...slide, i })).filter(({ i }) => i > 0 && loaded.value.has(i)) : []
+)
+const preload = (i: number) => {
+  const n = (i + slides.length) % slides.length
+  if (!loaded.value.has(n)) loaded.value = new Set(loaded.value).add(n)
+}
+watch(current, (i) => { preload(i); preload(i + 1) })
 
 let timer: ReturnType<typeof setInterval> | undefined
 let mq: MediaQueryList | undefined
@@ -47,6 +54,7 @@ const onTouchEnd = (e: TouchEvent) => {
 const onMq = (e: MediaQueryListEvent | MediaQueryList) => {
   isMobile.value = e.matches
   if (!e.matches) current.value = 0
+  else preload(1)
   start()
 }
 
@@ -93,12 +101,12 @@ onBeforeUnmount(() => {
           />
         </picture>
         <img
-          v-for="(slide, i) in extraSlides"
+          v-for="slide in extraSlides"
           :key="slide.src"
           :src="slide.src"
           :alt="slide.alt"
-          :aria-hidden="current !== i + 1"
-          :class="['hero-slide md:hidden absolute inset-0 w-full h-full object-cover object-center', current === i + 1 ? 'opacity-100' : 'opacity-0']"
+          :aria-hidden="current !== slide.i"
+          :class="['hero-slide md:hidden absolute inset-0 w-full h-full object-cover object-center', current === slide.i ? 'opacity-100' : 'opacity-0']"
           decoding="async"
         />
       </div>
@@ -106,18 +114,16 @@ onBeforeUnmount(() => {
       <!-- Bottom fade -->
       <div class="absolute bottom-0 left-0 right-0 h-32 md:h-40 bg-gradient-to-t from-[#2B1A1E] to-transparent pointer-events-none" />
 
-      <!-- Slide dots — mobile only -->
-      <div v-if="isMobile" class="md:hidden absolute bottom-6 left-0 right-0 z-10 flex justify-center gap-1">
-        <button
-          v-for="(slide, i) in slides"
-          :key="slide.src"
-          type="button"
-          :aria-label="`Show photo ${i + 1} of ${slides.length}`"
-          :aria-current="current === i"
-          class="flex h-6 items-center px-1"
-          @click="goTo(i)"
-        >
-          <span :class="['block h-1 rounded-full transition-all duration-500', current === i ? 'w-6 bg-gold' : 'w-2 bg-ink-light/40']" />
+      <!-- Slide controls — mobile only (23 dots would not fit, so arrows + counter) -->
+      <div v-if="isMobile" class="md:hidden absolute bottom-5 left-0 right-0 z-10 flex items-center justify-center gap-4">
+        <button type="button" aria-label="Previous photo" class="flex size-9 items-center justify-center rounded-full bg-black/30 text-ink-light/80" @click="goTo(current - 1)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <span class="min-w-14 text-center text-[11px] tracking-[0.25em] font-sans text-ink-light/80 tabular-nums" aria-live="polite">
+          {{ String(current + 1).padStart(2, '0') }} / {{ slides.length }}
+        </span>
+        <button type="button" aria-label="Next photo" class="flex size-9 items-center justify-center rounded-full bg-black/30 text-ink-light/80" @click="goTo(current + 1)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
         </button>
       </div>
 
