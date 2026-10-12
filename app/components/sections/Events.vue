@@ -206,84 +206,15 @@ onMounted(async () => {
         No upcoming events right now — check back soon.
       </p>
 
-      <!-- Previous Events -->
-      <div v-if="pastEvents.length" ref="pastRef" class="mt-20 md:mt-28">
-
-        <div class="mb-10 md:mb-12">
-          <span class="block text-[10px] tracking-[0.35em] uppercase font-sans text-ink/40 mb-4">
-            Archive
-          </span>
-          <h3 class="font-display text-3xl md:text-4xl text-ink/70 font-light leading-none">
-            Previous <span class="italic">events</span>
-          </h3>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div
-            v-for="event in pastEvents"
-            :key="event.slug"
-            class="group relative flex flex-col bg-surface/60 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,36,41,0.08)] opacity-80"
-          >
-
-              <!-- Whole card opens the event page -->
-            <NuxtLink
-              :to="`/events/${event.slug}`"
-              :aria-label="`${event.artist} — ${event.city}, ${event.month} ${event.date}`"
-              class="absolute inset-0 z-[5] rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
-            />
-
-            <!-- Image -->
-            <div class="relative w-full overflow-hidden bg-elevated">
-              <CmsImg
-                v-if="event.image"
-                :src="event.image"
-                :alt="event.artist"
-                sizes="xs:100vw sm:100vw md:340px"
-                class="w-full h-auto grayscale-[.35]"
-              />
-              <div
-                v-else
-                class="w-full aspect-[4/3] flex items-center justify-center"
-              >
-                <span class="font-display text-4xl font-light text-ink/10 tracking-widest uppercase">
-                  {{ event.artist.charAt(0) }}
-                </span>
-              </div>
-              <div
-                class="absolute top-4 left-4 text-[9px] tracking-[0.25em] uppercase font-sans text-ink-light bg-bg-dark rounded-full px-4 py-1.5"
-              >
-                Past Event
-              </div>
-            </div>
-
-            <!-- Card Body -->
-            <div class="flex flex-col flex-1 p-5">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] tracking-[0.2em] uppercase font-sans text-ink/50">
-                  {{ event.city }}
-                </span>
-                <span class="text-[10px] tracking-[0.15em] uppercase font-sans text-ink/45">
-                  {{ event.month }} {{ event.date }}, {{ event.year }}
-                </span>
-              </div>
-
-              <h3 class="font-display italic text-xl md:text-2xl font-bold text-ink/70 leading-tight mb-2">
-                {{ event.artist }}
-              </h3>
-
-              <p v-if="event.subtitle" class="text-sm font-sans font-light text-ink-muted/80 leading-relaxed mb-4">
-                {{ event.subtitle }}
-              </p>
-
-              <div class="mt-auto">
-                <span class="inline-block text-[10px] tracking-[0.25em] uppercase font-sans text-ink/40">
-                  Event Ended
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
+      <!-- Previous events live on their own page (/past-events) so the archive can grow -->
+      <div v-if="pastEvents.length" ref="pastRef" class="mt-14 md:mt-20 text-center">
+        <NuxtLink
+          to="/past-events"
+          class="inline-flex items-center gap-3 text-[10px] tracking-[0.2em] uppercase font-sans text-ink/70 border-b border-ink/30 pb-1 hover:text-gold hover:border-gold transition-colors duration-300"
+        >
+          <span>Browse previous events ({{ pastEvents.length }})</span>
+          <span>→</span>
+        </NuxtLink>
       </div>
 
     </div>

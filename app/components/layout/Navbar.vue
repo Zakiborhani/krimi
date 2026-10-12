@@ -7,6 +7,7 @@ const isMenuOpen = ref(false)
 
 const navLinks = [
   { label: 'Events', to: '/#events' },
+  { label: 'Past Events', to: '/past-events' },
   { label: 'Artists', to: '/artists' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
