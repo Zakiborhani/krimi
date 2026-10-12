@@ -60,6 +60,9 @@ export default defineNuxtConfig({
   image: {
     domains: ['portal-dara-it.com', 'www.karimientertainment.com', 'karimientertainment.com'],
     format: ['avif', 'webp'],
+    // Extra width for the mobile hero slides: phones crop the landscape photos
+    // to a tall frame, so the full ~1800 px width is needed for a sharp crop.
+    screens: { slide: 1800 },
   },
 
   typescript: {

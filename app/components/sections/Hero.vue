@@ -17,6 +17,12 @@ const slides = Array.from({ length: SLIDE_COUNT }, (_, i) => ({
 }))
 const INTERVAL = 5000
 
+// Slides and the desktop image go through image optimisation (AVIF/WebP).
+// Slides keep their full width (see image.screens.slide in nuxt.config.ts).
+const img = useImage()
+const slideSrc = (src: string) => img(src, { width: 1800, quality: 70 })
+const desktopSrcset = [1024, 1280, 1536].map(w => `${img('/images/hero1.jpeg', { width: w, quality: 75 })} ${w}w`).join(', ')
+
 const isMobile = ref(false)
 const current = ref(0)
 const loaded = ref(new Set<number>([0]))
@@ -90,9 +96,9 @@ onBeforeUnmount(() => {
         @touchend="onTouchEnd"
       >
         <picture>
-          <source media="(min-width: 768px)" srcset="/images/hero1.jpeg" />
+          <source media="(min-width: 768px)" :srcset="desktopSrcset" sizes="100vw" />
           <img
-            :src="slides[0]!.src"
+            :src="slideSrc(slides[0]!.src)"
             :alt="slides[0]!.alt"
             :class="['hero-slide md:!opacity-100', current === 0 ? 'opacity-100' : 'opacity-0']"
             class="absolute inset-0 w-full h-full object-cover object-center"
@@ -103,7 +109,7 @@ onBeforeUnmount(() => {
         <img
           v-for="slide in extraSlides"
           :key="slide.src"
-          :src="slide.src"
+          :src="slideSrc(slide.src)"
           :alt="slide.alt"
           :aria-hidden="current !== slide.i"
           :class="['hero-slide md:hidden absolute inset-0 w-full h-full object-cover object-center', current === slide.i ? 'opacity-100' : 'opacity-0']"
