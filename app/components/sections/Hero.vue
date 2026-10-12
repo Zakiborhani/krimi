@@ -20,7 +20,7 @@ const slides = SLIDE_ORDER.map(({ n, pos }, i) => ({
   alt: `Karimi Entertainment live concert — photo ${i + 1}`,
   pos: pos ?? 'center',
 }))
-const INTERVAL = 5000
+const INTERVAL = 3000
 
 // Slides and the desktop image go through image optimisation (AVIF/WebP).
 // Slides keep their full width (see image.screens.slide in nuxt.config.ts).
