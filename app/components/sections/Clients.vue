@@ -42,7 +42,7 @@ const strip = [...half, ...half]
       <!-- Scrolling strip — duplicated for seamless loop -->
       <!-- Spacing is padding on each item, not a flex gap, so the two halves are
            exactly equal and the -50% loop point lines up without a visible jump. -->
-      <div class="marquee-track flex items-center whitespace-nowrap" :style="{ animationDuration: `${half.length * 2.5}s` }">
+      <div class="marquee-track flex items-center whitespace-nowrap" :style="{ animationDuration: `${half.length * 1.8}s` }">
         <component
           :is="client.url ? 'a' : 'div'"
           v-for="(client, i) in strip"
