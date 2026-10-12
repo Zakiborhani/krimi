@@ -10,10 +10,15 @@ const isLoaded = ref(false)
 // the largest element, so it must not wait for JavaScript). The others are
 // added in the browser on phones only, one step ahead of the slide shown,
 // so desktop never downloads them and phones only fetch what they show.
-const SLIDE_COUNT = 23
-const slides = Array.from({ length: SLIDE_COUNT }, (_, i) => ({
-  src: `/images/hero-slides/slide-${String(i + 1).padStart(2, '0')}.jpeg`,
+// Files are numbered in the order they were added; this is the play order.
+// `pos` sets the crop for photos whose subject is off-centre.
+const SLIDE_ORDER: { n: number; pos?: string }[] = [
+  1, 2, 3, 4, { n: 24, pos: '62% center' }, 5, 6, 7, 8, 9, 10, 11, { n: 25, pos: '28% center' }, 12, 13, 14, 15, 16, 17, 18, 26, 19, 20, 21, 22, 23,
+].map(e => (typeof e === 'number' ? { n: e } : e))
+const slides = SLIDE_ORDER.map(({ n, pos }, i) => ({
+  src: `/images/hero-slides/slide-${String(n).padStart(2, '0')}.jpeg`,
   alt: `Karimi Entertainment live concert — photo ${i + 1}`,
+  pos: pos ?? 'center',
 }))
 const INTERVAL = 5000
 
@@ -112,7 +117,8 @@ onBeforeUnmount(() => {
           :src="slideSrc(slide.src)"
           :alt="slide.alt"
           :aria-hidden="current !== slide.i"
-          :class="['hero-slide md:hidden absolute inset-0 w-full h-full object-cover object-center', current === slide.i ? 'opacity-100' : 'opacity-0']"
+          :style="{ objectPosition: slide.pos }"
+          :class="['hero-slide md:hidden absolute inset-0 w-full h-full object-cover', current === slide.i ? 'opacity-100' : 'opacity-0']"
           decoding="async"
         />
       </div>
