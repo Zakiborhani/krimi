@@ -4,6 +4,8 @@ const currentYear = new Date().getFullYear()
 const { text } = await useCms()
 const email = text('contact.email')
 const instagram = text('social.instagram')
+const tiktok = text('social.tiktok')
+const youtube = text('social.youtube')
 const facebook = text('social.facebook')
 const tagline = text('footer.text')
 
@@ -85,6 +87,34 @@ const navLinks = [
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                 <circle cx="12" cy="12" r="4"/>
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+
+            <!-- TikTok -->
+            <a
+              v-if="tiktok"
+              :href="tiktok"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              class="text-ink/70 hover:text-crimson transition-colors duration-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 3a5 5 0 0 0 5 5"/><path d="M16 3v12a5 5 0 1 1-5-5"/>
+              </svg>
+            </a>
+
+            <!-- YouTube -->
+            <a
+              v-if="youtube"
+              :href="youtube"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              class="text-ink/70 hover:text-crimson transition-colors duration-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="4" ry="4"/><path d="m10 9 5 3-5 3z"/>
               </svg>
             </a>
 

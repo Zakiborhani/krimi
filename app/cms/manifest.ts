@@ -72,6 +72,8 @@ export const cmsManifest = {
     { key: 'contact.phone', type: 'text', label: 'Telefon', page: CONTACT, default: '+46 72 919 07 16' },
     { key: 'contact.email', type: 'text', label: 'E-post', page: CONTACT, default: 'info@karimientertainment.com' },
     { key: 'social.instagram', type: 'url', label: 'Instagram-länk', page: CONTACT, default: 'https://www.instagram.com/karimi_entertainment/' },
+    { key: 'social.tiktok', type: 'url', label: 'TikTok-länk', page: CONTACT, default: 'https://www.tiktok.com/@karimi_entertainment' },
+    { key: 'social.youtube', type: 'url', label: 'YouTube-länk', page: CONTACT, default: 'https://www.youtube.com/@karimi_entertainment' },
     { key: 'social.facebook', type: 'url', label: 'Facebook-länk', page: CONTACT, default: 'https://www.facebook.com/karimientertainment/' },
     { key: 'footer.text', type: 'text', label: 'Text i sidfoten', page: GENERAL, default: 'Bringing the finest Afghan & Iranian artists to stages across Europe.' },
   ],

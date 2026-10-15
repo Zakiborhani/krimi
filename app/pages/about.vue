@@ -1,61 +1,14 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 useHead({ title: 'About — Karimi Entertainment' })
 
 const storyRef = ref<HTMLElement | null>(null)
 const founderRef = ref<HTMLElement | null>(null)
 const statsRef = ref<HTMLElement | null>(null)
-const founderPhotoRef = ref<HTMLElement | null>(null)
-
-const audioRef = ref<HTMLAudioElement | null>(null)
-const isPlaying = ref(false)
-const currentTime = ref(0)
-const duration = ref(0)
-
-const toggleAudio = () => {
-  if (!audioRef.value) return
-  if (isPlaying.value) {
-    audioRef.value.pause()
-  } else {
-    audioRef.value.play()
-  }
-}
-
-const onAudioPlay = () => { isPlaying.value = true }
-const onAudioPause = () => { isPlaying.value = false }
-const onAudioEnded = () => { isPlaying.value = false; currentTime.value = 0 }
-const onTimeUpdate = () => { if (audioRef.value) currentTime.value = audioRef.value.currentTime }
-const onLoadedMetadata = () => { if (audioRef.value) duration.value = audioRef.value.duration }
-
-const progressPercent = computed(() => duration.value ? (currentTime.value / duration.value) * 100 : 0)
-const remainingLabel = computed(() => {
-  const remaining = Math.max(duration.value - currentTime.value, 0)
-  const mins = Math.floor(remaining / 60)
-  const secs = Math.floor(remaining % 60)
-  return `${mins}:${secs.toString().padStart(2, '0')}`
-})
-
-let founderAudioObserver: IntersectionObserver | null = null
 
 onMounted(async () => {
   if (import.meta.client) {
-    if (founderPhotoRef.value) {
-      founderAudioObserver = new IntersectionObserver(
-        ([entry]) => {
-          if (!audioRef.value || !entry) return
-          if (entry.isIntersecting) {
-            audioRef.value.currentTime = 0
-            audioRef.value.play().catch(() => {})
-          } else {
-            audioRef.value.pause()
-          }
-        },
-        { threshold: 0.6 }
-      )
-      founderAudioObserver.observe(founderPhotoRef.value)
-    }
-
     const { gsap } = await import('gsap')
     const { ScrollTrigger } = await import('gsap/ScrollTrigger')
     gsap.registerPlugin(ScrollTrigger)
@@ -95,9 +48,6 @@ onMounted(async () => {
   }
 })
 
-onBeforeUnmount(() => {
-  founderAudioObserver?.disconnect()
-})
 </script>
 
 <template>
@@ -173,7 +123,7 @@ onBeforeUnmount(() => {
         <div ref="founderRef" class="grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
 
           <!-- Left — founder photo -->
-          <div ref="founderPhotoRef" class="relative aspect-[3/4]">
+          <div class="relative aspect-[3/4]">
             <!-- Decorative offset frames -->
             <div class="absolute -top-4 -left-4 w-full h-full rounded-2xl border border-crimson/60 -rotate-3 pointer-events-none" />
             <div class="absolute -top-2 -left-2 w-full h-full rounded-2xl border border-gold/60 -rotate-1 pointer-events-none" />
@@ -187,58 +137,6 @@ onBeforeUnmount(() => {
                 class="w-full h-full object-cover object-center grayscale"
               />
 
-              <audio
-                ref="audioRef"
-                src="/audio/founder-intro.mp3"
-                preload="metadata"
-                @play="onAudioPlay"
-                @pause="onAudioPause"
-                @ended="onAudioEnded"
-                @timeupdate="onTimeUpdate"
-                @loadedmetadata="onLoadedMetadata"
-              />
-
-              <!-- Spotify-style mini player -->
-              <div class="absolute bottom-0 left-0 right-0 px-3 pb-3 pt-8 bg-gradient-to-t from-bg-dark/90 via-bg-dark/50 to-transparent flex items-center gap-3">
-                <button
-                  type="button"
-                  @click="toggleAudio"
-                  class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gold text-bg-dark shadow-lg transition-transform duration-300 hover:scale-105 active:scale-95"
-                  :aria-label="isPlaying ? 'Pause founder introduction' : 'Play founder introduction'"
-                >
-                  <svg v-if="!isPlaying" viewBox="0 0 24 24" class="w-3 h-3 ml-0.5" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                  <svg v-else viewBox="0 0 24 24" class="w-3 h-3" fill="currentColor">
-                    <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
-                  </svg>
-                </button>
-
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between mb-1">
-                    <div v-if="isPlaying" class="flex items-center gap-1.5 text-[9px] tracking-[0.2em] uppercase font-sans text-gold">
-                      <span class="flex items-end gap-0.5 h-2">
-                        <span class="w-0.5 bg-gold audio-bar audio-bar-1" />
-                        <span class="w-0.5 bg-gold audio-bar audio-bar-2" />
-                        <span class="w-0.5 bg-gold audio-bar audio-bar-3" />
-                      </span>
-                      Listening
-                    </div>
-                    <span v-else class="text-[9px] tracking-[0.2em] uppercase font-sans text-ink-light/50">
-                      Founder Intro
-                    </span>
-                    <span class="text-[9px] tracking-[0.1em] font-sans text-ink-light/70 tabular-nums">
-                      -{{ remainingLabel }}
-                    </span>
-                  </div>
-                  <div class="h-0.5 w-full bg-ink-light/20 rounded-full overflow-hidden">
-                    <div
-                      class="h-full bg-gold rounded-full transition-[width] duration-150 ease-linear"
-                      :style="{ width: progressPercent + '%' }"
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -292,15 +190,4 @@ onBeforeUnmount(() => {
               color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.audio-bar {
-  animation: audio-bar-bounce 0.9s ease-in-out infinite;
-}
-.audio-bar-1 { height: 40%; animation-delay: 0s; }
-.audio-bar-2 { height: 100%; animation-delay: 0.15s; }
-.audio-bar-3 { height: 65%; animation-delay: 0.3s; }
-
-@keyframes audio-bar-bounce {
-  0%, 100% { height: 30%; }
-  50% { height: 100%; }
-}
 </style>

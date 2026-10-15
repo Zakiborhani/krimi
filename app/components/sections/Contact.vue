@@ -5,6 +5,8 @@ const { text } = await useCms()
 const phone = text('contact.phone')
 const email = text('contact.email')
 const instagram = text('social.instagram')
+const tiktok = text('social.tiktok')
+const youtube = text('social.youtube')
 const facebook = text('social.facebook')
 
 const sectionRef = ref<HTMLElement | null>(null)
@@ -130,6 +132,34 @@ onMounted(async () => {
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
               </svg>
               <span class="text-[9px] tracking-[0.25em] uppercase font-sans">Instagram</span>
+            </a>
+
+            <a
+              v-if="tiktok"
+              :href="tiktok"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              class="group flex flex-col items-center gap-2 text-ink-light/30 hover:text-gold transition-colors duration-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 3a5 5 0 0 0 5 5"/><path d="M16 3v12a5 5 0 1 1-5-5"/>
+              </svg>
+              <span class="text-[9px] tracking-[0.25em] uppercase font-sans">TikTok</span>
+            </a>
+
+            <a
+              v-if="youtube"
+              :href="youtube"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              class="group flex flex-col items-center gap-2 text-ink-light/30 hover:text-gold transition-colors duration-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="4" ry="4"/><path d="m10 9 5 3-5 3z"/>
+              </svg>
+              <span class="text-[9px] tracking-[0.25em] uppercase font-sans">YouTube</span>
             </a>
 
             <a

@@ -40,6 +40,35 @@ const preload = (i: number) => {
 }
 watch(current, (i) => { preload(i); preload(i + 1) })
 
+// Hero music. Browsers block sound until the visitor has interacted with the
+// page, so if the first play() is refused it starts on the first tap, click
+// or key press instead. Once the visitor pauses it, it stays paused.
+const audioRef = ref<HTMLAudioElement | null>(null)
+const musicBtnRef = ref<HTMLButtonElement | null>(null)
+const isPlaying = ref(false)
+let userPaused = false
+
+const GESTURES = ['pointerdown', 'keydown', 'touchstart'] as const
+const removeGestureListeners = () => GESTURES.forEach(g => window.removeEventListener(g, onFirstGesture))
+const onFirstGesture = (e: Event) => {
+  removeGestureListeners()
+  // A tap on the music button itself is handled by toggleMusic
+  if (musicBtnRef.value?.contains(e.target as Node)) return
+  if (!userPaused) audioRef.value?.play().catch(() => {})
+}
+const toggleMusic = () => {
+  const audio = audioRef.value
+  if (!audio) return
+  removeGestureListeners()
+  if (isPlaying.value) {
+    userPaused = true
+    audio.pause()
+  } else {
+    userPaused = false
+    audio.play().catch(() => {})
+  }
+}
+
 let timer: ReturnType<typeof setInterval> | undefined
 let mq: MediaQueryList | undefined
 
@@ -76,6 +105,10 @@ onMounted(() => {
   mq = window.matchMedia('(max-width: 767px)')
   onMq(mq)
   mq.addEventListener('change', onMq)
+
+  audioRef.value?.play().catch(() => {
+    GESTURES.forEach(g => window.addEventListener(g, onFirstGesture, { passive: true }))
+  })
 })
 
 watch(prefersReducedMotion, start)
@@ -83,6 +116,8 @@ watch(prefersReducedMotion, start)
 onBeforeUnmount(() => {
   stop()
   mq?.removeEventListener('change', onMq)
+  removeGestureListeners()
+  audioRef.value?.pause()
 })
 </script>
 
@@ -139,6 +174,36 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
+      <!-- Music -->
+      <audio
+        ref="audioRef"
+        src="/audio/founder-intro.mp3"
+        preload="auto"
+        @play="isPlaying = true"
+        @pause="isPlaying = false"
+        @ended="isPlaying = false"
+      />
+      <button
+        ref="musicBtnRef"
+        type="button"
+        class="absolute z-10 bottom-5 right-4 md:bottom-8 md:right-10 lg:right-16 flex items-center gap-2.5 h-9 pl-3 pr-4 rounded-full bg-black/35 backdrop-blur-sm text-ink-light/85 hover:text-gold transition-colors duration-300"
+        :aria-label="isPlaying ? 'Pause music' : 'Play music'"
+        :aria-pressed="isPlaying"
+        @click="toggleMusic"
+      >
+        <span v-if="isPlaying" class="flex items-end gap-0.5 h-3" aria-hidden="true">
+          <span class="w-0.5 bg-current audio-bar audio-bar-1" />
+          <span class="w-0.5 bg-current audio-bar audio-bar-2" />
+          <span class="w-0.5 bg-current audio-bar audio-bar-3" />
+        </span>
+        <svg v-else viewBox="0 0 24 24" class="w-3 h-3" fill="currentColor" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+        <span class="hidden sm:inline text-[9px] tracking-[0.25em] uppercase font-sans">
+          {{ isPlaying ? 'Pause' : 'Play' }} music
+        </span>
+      </button>
+
       <!-- Scroll Indicator — desktop only -->
       <div
         :class="[
@@ -159,9 +224,25 @@ onBeforeUnmount(() => {
 .hero-slide {
   transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.audio-bar {
+  animation: audio-bar-bounce 0.9s ease-in-out infinite;
+}
+.audio-bar-1 { height: 40%; animation-delay: 0s; }
+.audio-bar-2 { height: 100%; animation-delay: 0.15s; }
+.audio-bar-3 { height: 65%; animation-delay: 0.3s; }
+
+@keyframes audio-bar-bounce {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-slide {
     transition: none;
+  }
+  .audio-bar {
+    animation: none;
   }
 }
 </style>
