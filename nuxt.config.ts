@@ -27,9 +27,9 @@ export default defineNuxtConfig({
         customerId: 'e444fbfa-6fbe-46ef-b6c6-ac005adc249c',
         portalUrl: 'https://portal-dara-it.com',
         // AI receptionist chat bubble. The id is shown with the embed code in
-        // the portal (AI receptionist page). Set NUXT_PUBLIC_DARA_CMS_CHAT_ASSISTANT_ID;
-        // empty means no chat.
-        chatAssistantId: '',
+        // the portal (AI receptionist > Lägg på hemsidan). NUXT_PUBLIC_DARA_CMS_CHAT_ASSISTANT_ID
+        // overrides it; empty means no chat.
+        chatAssistantId: '66bf27d5-2803-44a5-a1d2-a6e3e8895094',
       },
     },
   },
